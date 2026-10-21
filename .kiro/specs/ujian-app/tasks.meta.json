@@ -1,0 +1,241 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Inisialisasi proyek, konfigurasi tooling, dan Prisma schema": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579638877
+      },
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579652005
+      }
+    ],
+    "2.1 Konfigurasi NextAuth.js credentials provider": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579639047
+      }
+    ],
+    "2.2 Implementasikan middleware RBAC": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579639143
+      }
+    ],
+    "2.4 Buat halaman login UI": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579639212
+      }
+    ],
+    "3. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579639277
+      }
+    ],
+    "4.1 Implementasikan API users (CRUD + status)": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579639380
+      }
+    ],
+    "4.3 Buat halaman Admin: daftar dan form manajemen pengguna": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579639607
+      }
+    ],
+    "5.1 Implementasikan validator Zod untuk Question": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579639722
+      }
+    ],
+    "5.3 Implementasikan API questions (CRUD dengan versioning)": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579639906
+      }
+    ],
+    "5.5 Buat halaman Bank Soal Guru": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579639993
+      }
+    ],
+    "6. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640090
+      }
+    ],
+    "7.1 Implementasikan validator Zod untuk Exam": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640179
+      }
+    ],
+    "7.2 Implementasikan API exams (CRUD + publish + assign)": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640358
+      }
+    ],
+    "7.4 Buat halaman pembuatan dan konfigurasi ujian Guru": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640434
+      }
+    ],
+    "8.1 Implementasikan fungsi scoring murni": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640495
+      }
+    ],
+    "8.7 Implementasikan API laporan dan komponen report": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640560
+      }
+    ],
+    "8.8 Implementasikan ekspor PDF dan Excel": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640638
+      }
+    ],
+    "9. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640704
+      }
+    ],
+    "10.1 Implementasikan Shuffle_Service": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640763
+      }
+    ],
+    "10.2 Integrasikan Shuffle_Service ke exam session creation": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640826
+      }
+    ],
+    "11.1 Implementasikan API exam-sessions (buat/resume, jawaban, submit)": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640893
+      }
+    ],
+    "11.4 Implementasikan `useExamTimer` dan `CountdownTimer`": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579640958
+      }
+    ],
+    "11.5 Implementasikan `useOfflineSync` dengan IndexedDB": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641027
+      }
+    ],
+    "11.6 Implementasikan ExamEngine (Client Component utama)": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641093
+      }
+    ],
+    "12. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641160
+      }
+    ],
+    "13.1 Implementasikan `useProctor` hook dan ProctorService": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641226
+      }
+    ],
+    "13.4 Integrasikan ProctorService ke ExamEngine": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641301
+      }
+    ],
+    "14.1 Implementasikan verifikasi immutabilitas snapshot di test": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641373
+      }
+    ],
+    "15.1 Buat halaman dashboard Siswa: daftar ujian yang ditugaskan": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641441
+      }
+    ],
+    "15.2 Buat halaman hasil ujian setelah submit": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641508
+      }
+    ],
+    "16. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641577
+      }
+    ],
+    "17.1 Wiring komponen dan halaman Guru (laporan + navigasi)": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641659
+      }
+    ],
+    "18. Final checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan": [
+      {
+        "executionId": "dd1a0522-8d8d-4e47-8a30-99422263a28c",
+        "chatSessionId": "sess_6dff76cf-6dd2-4d16-9cef-9a07355787c5",
+        "timestamp": 1792579641728
+      }
+    ]
+  }
+}
