@@ -1,8 +1,17 @@
+import { Suspense } from 'react'
 import { getSession } from '@/lib/auth/session'
 import { redirect } from 'next/navigation'
 import { logoutAction } from '@/actions/auth.actions'
 
-export default async function SiswaDashboardPage() {
+export default function SiswaDashboardPage() {
+  return (
+    <Suspense fallback={<p className="p-8 text-gray-500">Memuat dashboard...</p>}>
+      <SiswaDashboardContent />
+    </Suspense>
+  )
+}
+
+async function SiswaDashboardContent() {
   const session = await getSession()
   if (!session || session.role !== 'SISWA') redirect('/login')
 
