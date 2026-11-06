@@ -39,7 +39,7 @@ export const userRepository: UserRepository = {
   async findByEmail(email: string): Promise<AuthUser | null> {
     const db = await getDb()
     const user = await db.orm.public.User
-      .where((u: { email: { eq: (v: string) => unknown } }) => u.email.eq(email))
+      .where({ email })
       .first()
     if (!user) return null
     return {
@@ -56,11 +56,12 @@ export const userRepository: UserRepository = {
 
   async incrementFailedAttempts(userId: string): Promise<void> {
     const db = await getDb()
-    await db.orm.public.User
-      .where({ id: userId })
-      .update((u: { failedLoginAttempts: { increment: (n: number) => unknown } }) => ({
-        failedLoginAttempts: u.failedLoginAttempts.increment(1),
-      }))
+    const plan = db.raw.sql`
+      UPDATE "public"."User"
+      SET "failedLoginAttempts" = "failedLoginAttempts" + 1
+      WHERE "id" = ${userId}
+    `.affectedCount().build()
+    await db.runtime().execute(plan)
   },
 
   async setLockedUntil(userId: string, lockedUntil: Date): Promise<void> {

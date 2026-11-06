@@ -1,21 +1,169 @@
 // use prisma-8
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String?
-  name      String?
-  posts     Post[]
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+enum Role {
+  ADMIN
+  GURU
+  SISWA
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  title     String
-  content   String?
-  author    User     @relation(fields: [authorId], references: [id])
-  authorId  Int
+enum ExamStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum SessionStatus {
+  ACTIVE
+  SUBMITTED
+  EXPIRED
+}
+
+enum ViolationType {
+  FULLSCREEN_EXIT
+  TAB_SWITCH
+}
+
+model User {
+  id                  String           @id @default(cuid(2))
+  name                String
+  email               String           @unique
+  password            String
+  role                Role
+  isActive            Boolean          @default(true)
+  failedLoginAttempts Int              @default(0)
+  lockedUntil         TimestamptzString?
+  createdAt           TimestamptzString @default(now())
+  updatedAt           temporal.updatedAtString()
+  questions           Question[]
+  exams               Exam[]
+  assignments         ExamAssignment[]
+  sessions            ExamSession[]
+}
+
+model Question {
+  id            String             @id @default(cuid(2))
+  guruId        String
+  guru          User               @relation(fields: [guruId], references: [id])
+  text          String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctOption String
+  version       Int                @default(1)
+  isDeleted     Boolean            @default(false)
+  createdAt     TimestamptzString  @default(now())
+  updatedAt     temporal.updatedAtString()
+  snapshots     QuestionSnapshot[]
+  examQuestions ExamQuestion[]
+}
+
+model QuestionSnapshot {
+  id            String           @id @default(cuid(2))
+  questionId    String
+  question      Question         @relation(fields: [questionId], references: [id])
+  version       Int
+  text          String
+  optionA       String
+  optionB       String
+  optionC       String
+  optionD       String
+  correctOption String
+  createdAt     TimestamptzString @default(now())
+  examQuestions ExamQuestion[]
+  answers       Answer[]
+
+  @@unique([questionId, version])
+}
+
+model Exam {
+  id                  String           @id @default(cuid(2))
+  guruId              String
+  guru                User             @relation(fields: [guruId], references: [id])
+  title               String
+  durationMinutes     Int
+  status              ExamStatus       @default(DRAFT)
+  fullscreenEnabled   Boolean          @default(false)
+  tabSwitchDetection  Boolean          @default(false)
+  maxViolations       Int?
+  shuffleQuestions    Boolean          @default(false)
+  shuffleOptions      Boolean          @default(false)
+  createdAt           TimestamptzString @default(now())
+  updatedAt           temporal.updatedAtString()
+  examQuestions       ExamQuestion[]
+  assignments         ExamAssignment[]
+  sessions            ExamSession[]
+}
+
+model ExamQuestion {
+  id                 String           @id @default(cuid(2))
+  examId             String
+  exam               Exam             @relation(fields: [examId], references: [id])
+  snapshotId         String
+  snapshot           QuestionSnapshot @relation(fields: [snapshotId], references: [id])
+  originalQuestionId String
+  originalQuestion   Question         @relation(fields: [originalQuestionId], references: [id])
+  orderIndex         Int
+  answers            Answer[]
+
+  @@unique([examId, orderIndex])
+}
+
+model ExamAssignment {
+  id        String           @id @default(cuid(2))
+  examId    String
+  exam      Exam             @relation(fields: [examId], references: [id])
+  siswaId   String
+  siswa     User             @relation(fields: [siswaId], references: [id])
   createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+
+  @@unique([examId, siswaId])
+}
+
+model ExamSession {
+  id               String           @id @default(cuid(2))
+  examId           String
+  exam             Exam             @relation(fields: [examId], references: [id])
+  siswaId          String
+  siswa            User             @relation(fields: [siswaId], references: [id])
+  status           SessionStatus    @default(ACTIVE)
+  startedAt        TimestamptzString @default(now())
+  submittedAt      TimestamptzString?
+  remainingSeconds Int
+  finalScore       Decimal?
+  answers          Answer[]
+  violations       Violation[]
+  sessionOrder     SessionOrder?
+
+  @@unique([examId, siswaId])
+}
+
+model Answer {
+  id             String           @id @default(cuid(2))
+  sessionId      String
+  session        ExamSession      @relation(fields: [sessionId], references: [id])
+  examQuestionId String
+  examQuestion   ExamQuestion     @relation(fields: [examQuestionId], references: [id])
+  snapshotId     String
+  snapshot       QuestionSnapshot @relation(fields: [snapshotId], references: [id])
+  selectedOption String
+  isCorrect      Boolean
+  answeredAt     TimestamptzString @default(now())
+
+  @@unique([sessionId, examQuestionId])
+}
+
+model Violation {
+  id         String           @id @default(cuid(2))
+  sessionId  String
+  session    ExamSession      @relation(fields: [sessionId], references: [id])
+  type       ViolationType
+  occurredAt TimestamptzString @default(now())
+}
+
+model SessionOrder {
+  id            String      @id @default(cuid(2))
+  sessionId     String      @unique
+  session       ExamSession @relation(fields: [sessionId], references: [id])
+  questionOrder String[]
+  optionOrders  Json
 }
