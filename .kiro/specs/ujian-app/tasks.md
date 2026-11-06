@@ -16,7 +16,7 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
   - [x] Lengkapi `src/prisma/contract.prisma` dengan model `User`, `Question`, `QuestionSnapshot`, `Exam`, `ExamQuestion`, `ExamAssignment`, `ExamSession`, `Answer`, `Violation`, dan `SessionOrder`; enum serta constraint unik mengikuti kebutuhan fitur
   - [x] Emit `contract.json` dan `contract.d.ts` menggunakan `prisma contract emit`
   - [x] Buat tipe domain pada `src/types/index.ts` dan gunakan singleton Prisma ORM yang sudah ada di `src/prisma/db.ts`
-  - [ ] Jalankan `prisma db init` melalui `npm run db:setup` setelah PostgreSQL 15+ tersedia dan `DATABASE_URL` dikonfigurasi
+  - [x] Jalankan `prisma db init` melalui `npm run db:setup` setelah PostgreSQL 15+ tersedia dan `DATABASE_URL` dikonfigurasi
   - _Requirements: 1, 2, 3, 4, 5, 6, 7, 8, 9_
 
 - [ ] 2. Autentikasi dengan NextAuth.js dan middleware RBAC
