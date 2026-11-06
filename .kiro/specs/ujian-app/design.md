@@ -2,7 +2,7 @@
 
 ## Overview
 
-Ujian App adalah aplikasi ujian online berbasis web yang dibangun dengan Next.js 14 (App Router). Aplikasi ini melayani tiga peran pengguna: **Admin**, **Guru**, dan **Siswa**, masing-masing dengan alur kerja dan hak akses tersendiri.
+Ujian App adalah aplikasi ujian online berbasis web yang dibangun dengan Next.js 16 atau versi stable lebih baru yang kompatibel (App Router). Aplikasi ini melayani tiga peran pengguna: **Admin**, **Guru**, dan **Siswa**, masing-masing dengan alur kerja dan hak akses tersendiri.
 
 Tujuan utama desain ini adalah:
 
@@ -22,7 +22,7 @@ Tujuan utama desain ini adalah:
 
 ### Pendekatan Arsitektur
 
-Aplikasi menggunakan arsitektur **full-stack monolith** berbasis Next.js 14 App Router dengan pola sebagai berikut:
+Aplikasi menggunakan arsitektur **full-stack monolith** berbasis Next.js 16 atau versi stable lebih baru yang kompatibel dengan App Router, dengan pola sebagai berikut:
 
 - **Server Components** untuk rendering halaman yang tidak membutuhkan interaktivitas (dashboard, laporan)
 - **Client Components** untuk interaksi real-time (exam engine, proctoring, timer)
@@ -393,6 +393,8 @@ model Exam {
   fullscreenEnabled  Boolean  @default(false)
   tabSwitchDetection Boolean  @default(false)
   maxViolations    Int?                        // null = tidak ada batas
+  shuffleQuestions Boolean   @default(false)
+  shuffleOptions   Boolean   @default(false)
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @updatedAt
 
@@ -447,6 +449,7 @@ model ExamSession {
 
   answers         Answer[]
   violations      Violation[]
+  sessionOrder    SessionOrder?
 
   @@unique([examId, siswaId])   // satu sesi aktif per siswa per ujian (Req 8.3)
 }
@@ -476,6 +479,14 @@ model Violation {
   session     ExamSession   @relation(fields: [sessionId], references: [id])
   type        ViolationType
   occurredAt  DateTime      @default(now())
+}
+
+model SessionOrder {
+  id            String      @id @default(cuid())
+  sessionId     String      @unique
+  session       ExamSession @relation(fields: [sessionId], references: [id])
+  questionOrder String[]
+  optionOrders  Json
 }
 ```
 

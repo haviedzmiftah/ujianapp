@@ -2,21 +2,21 @@
 
 ## Overview
 
-Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding yang inkremental menggunakan Next.js 14 App Router, TypeScript, Prisma ORM, NextAuth.js, dan Tailwind CSS. Setiap task dibangun di atas task sebelumnya, dimulai dari fondasi (schema, auth) hingga fitur lengkap yang saling terhubung.
+Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding yang inkremental menggunakan Next.js 16 atau versi stable lebih baru yang kompatibel dengan App Router, TypeScript, Prisma ORM, NextAuth.js, dan Tailwind CSS. Pertahankan versi Next.js yang sudah digunakan proyek dan jangan downgrade. Setiap task dibangun di atas task sebelumnya, dimulai dari fondasi (schema, auth) hingga fitur lengkap yang saling terhubung.
 
-**Stack:** Next.js 14 · TypeScript · Tailwind CSS · PostgreSQL · Prisma · NextAuth.js · fast-check · Vitest · @testing-library/react · jest-mock-extended · Recharts · jsPDF · SheetJS · idb (IndexedDB)
+**Stack:** Next.js 16 atau versi stable lebih baru yang kompatibel · TypeScript · Tailwind CSS · PostgreSQL · Prisma · NextAuth.js · fast-check · Vitest · @testing-library/react · jest-mock-extended · Recharts · jsPDF · SheetJS · idb (IndexedDB)
 
 ---
 
 ## Tasks
 
 - [ ] 1. Inisialisasi proyek, konfigurasi tooling, dan Prisma schema
-  - Inisialisasi proyek Next.js 14 App Router dengan TypeScript dan Tailwind CSS
-  - Konfigurasi Vitest, @testing-library/react, jest-mock-extended, dan fast-check
-  - Buat `prisma/schema.prisma` dengan semua model: `User`, `Question`, `QuestionSnapshot`, `Exam`, `ExamQuestion`, `ExamAssignment`, `ExamSession`, `Answer`, `Violation`, `SessionOrder`; lengkap dengan enum `Role`, `ExamStatus`, `SessionStatus`, `ViolationType`, dan semua constraint `@@unique`
-  - Buat `src/types/index.ts` dengan TypeScript types/interfaces yang merepresentasikan semua model Prisma
-  - Buat `src/lib/prisma.ts` sebagai Prisma client singleton
-  - Jalankan `prisma migrate dev` untuk membuat database
+  - [x] Siapkan proyek Next.js 16 atau versi stable lebih baru yang kompatibel dengan App Router, TypeScript, dan Tailwind CSS; pertahankan versi yang sudah digunakan proyek dan jangan downgrade
+  - [x] Konfigurasi Vitest, @testing-library/react, jest-mock-extended, dan fast-check
+  - [x] Lengkapi `src/prisma/contract.prisma` dengan model `User`, `Question`, `QuestionSnapshot`, `Exam`, `ExamQuestion`, `ExamAssignment`, `ExamSession`, `Answer`, `Violation`, dan `SessionOrder`; enum serta constraint unik mengikuti kebutuhan fitur
+  - [x] Emit `contract.json` dan `contract.d.ts` menggunakan `prisma contract emit`
+  - [x] Buat tipe domain pada `src/types/index.ts` dan gunakan singleton Prisma ORM yang sudah ada di `src/prisma/db.ts`
+  - [ ] Jalankan `prisma db init` melalui `npm run db:setup` setelah PostgreSQL 15+ tersedia dan `DATABASE_URL` dikonfigurasi
   - _Requirements: 1, 2, 3, 4, 5, 6, 7, 8, 9_
 
 - [ ] 2. Autentikasi dengan NextAuth.js dan middleware RBAC

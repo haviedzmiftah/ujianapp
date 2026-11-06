@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Ujian App adalah aplikasi ujian online berbasis web (Next.js 14) yang dirancang untuk institusi pendidikan. Aplikasi ini mendukung tiga peran pengguna: Admin, Guru, dan Siswa. Guru dapat membuat dan mengelola soal pilihan ganda serta mengatur sesi ujian. Siswa mengerjakan ujian dalam lingkungan terpantau (proctoring) dengan timer, fullscreen mode, dan deteksi tab switching. Admin mengelola pengguna dan institusi. Setelah ujian selesai, sistem menghasilkan laporan nilai, analisis soal, dan visualisasi grafik yang dapat diekspor ke PDF dan Excel.
+Ujian App adalah aplikasi ujian online berbasis web (Next.js 16 atau versi stable lebih baru yang kompatibel) yang dirancang untuk institusi pendidikan. Aplikasi ini mendukung tiga peran pengguna: Admin, Guru, dan Siswa. Guru dapat membuat dan mengelola soal pilihan ganda serta mengatur sesi ujian. Siswa mengerjakan ujian dalam lingkungan terpantau (proctoring) dengan timer, fullscreen mode, dan deteksi tab switching. Admin mengelola pengguna dan institusi. Setelah ujian selesai, sistem menghasilkan laporan nilai, analisis soal, dan visualisasi grafik yang dapat diekspor ke PDF dan Excel.
 
 ---
 
