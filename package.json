@@ -6,12 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "contract:emit": "prisma contract emit"
+    "contract:emit": "prisma contract emit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/cli-engine": "^0.9.0",
     "@prisma/client": "^7.10.1",
     "@prisma/orm-postgres": "^8.0.0-rc.18",
+    "@testing-library/dom": "^10.4.2",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^3.0.3",
     "dotenv": "^18.0.8",
@@ -25,6 +29,7 @@
     "recharts": "^3.10.1",
     "server-only": "^0.0.1",
     "temporal-polyfill": "^1.0.6",
+    "vite": "^8.3.5",
     "xlsx": "^0.18.5",
     "zod": "^4.6.7"
   },

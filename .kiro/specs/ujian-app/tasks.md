@@ -30,7 +30,7 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - Tangani redirect ke `/login` untuk sesi kedaluwarsa dan redirect ke `/dashboard/{role}` untuk akses tidak diizinkan
     - Implementasikan auto-refresh token saat sisa waktu ≤5 menit
     - _Requirements: 1.5, 1.6, 1.7, 1.8, 2.1_
-  - [ ]* 2.3 Tulis property test untuk RBAC (Property 10)
+  - [ ] 2.3 Tulis property test untuk RBAC (Property 10)
     - **Property 10: RBAC access decisions consistent with config table**
     - Generator: semua kombinasi (role ∈ {ADMIN, GURU, SISWA}, routePath dari tabel RBAC config) — gunakan `fc.constantFrom`
     - Verifikasi: keputusan akses middleware SELALU konsisten dengan konfigurasi RBAC yang ditetapkan untuk setiap pasangan (role, route)
