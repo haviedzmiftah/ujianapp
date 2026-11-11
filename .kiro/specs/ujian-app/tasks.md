@@ -59,36 +59,36 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - Tampilkan pesan validasi per field dan pesan "Email sudah digunakan oleh akun lain"
     - _Requirements: 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.9_
 
-- [ ] 5. Bank soal oleh Guru
-  - [ ] 5.1 Implementasikan validator Zod untuk Question
+- [x] 5. Bank soal oleh Guru
+  - [x] 5.1 Implementasikan validator Zod untuk Question
     - Buat `src/lib/validators/question.ts` dengan Zod schema: `text` (1–1000 char, trim, no whitespace-only), `optionA/B/C/D` (1–500 char, trim, no whitespace-only), `correctOption` (enum A/B/C/D)
     - _Requirements: 3.2, 3.3_
-  - [ ]* 5.2 Tulis property test untuk penolakan whitespace-only (Property 7)
+  - [x]* 5.2 Tulis property test untuk penolakan whitespace-only (Property 7)
     - **Property 7: whitespace-only input always rejected**
     - Generator: `fc.stringOf(fc.constantFrom(' ', '\t', '\n', '\r'), { minLength: 0, maxLength: 100 })` untuk setiap field teks
     - Verifikasi: Zod schema SELALU mengembalikan `ZodError` untuk semua string whitespace-only pada field `text`, `optionA`, `optionB`, `optionC`, `optionD`
     - Tag: `// Feature: ujian-app, Property 7: whitespace-only input rejection`
     - Min 100 iterasi — **Validates: Requirements 3.2, 3.3**
-  - [ ] 5.3 Implementasikan API questions (CRUD dengan versioning)
+  - [x] 5.3 Implementasikan API questions (CRUD dengan versioning)
     - Buat `src/app/api/questions/route.ts`: `GET` (list soal milik guru yang login, filter `isDeleted=false`), `POST` (buat soal baru, validasi via Zod, simpan ke DB)
     - Buat `src/app/api/questions/[id]/route.ts`:
       - `PATCH`: jika soal belum pernah digunakan di ujian → update langsung; jika sudah digunakan di ujian yang selesai → increment `version`, buat `QuestionSnapshot` baru; jika digunakan di ujian aktif → tolak 422
       - `DELETE`: jika soal punya referensi `ExamQuestion` → tolak 422; jika tidak → set `isDeleted=true` (soft delete) atau hapus permanen jika tidak pernah digunakan
     - Pastikan ownership check: hanya guru pemilik soal yang boleh mengubah/menghapus
     - _Requirements: 3.1, 3.2, 3.4, 3.5, 3.6, 3.7, 3.8_
-  - [ ]* 5.4 Tulis property test untuk penolakan hapus soal terkait ujian (Property 8)
+  - [x]* 5.4 Tulis property test untuk penolakan hapus soal terkait ujian (Property 8)
     - **Property 8: linked question deletion always rejected (422)**
     - Generator: `Question` acak yang terhubung ke minimal satu `ExamQuestion` (in-memory mock repository menggunakan jest-mock-extended)
     - Verifikasi: `deleteQuestion(id)` SELALU mengembalikan status 422 terlepas dari data soal lainnya
     - Tag: `// Feature: ujian-app, Property 8: linked question deletion rejected`
     - Min 100 iterasi — **Validates: Requirements 3.8**
-  - [ ] 5.5 Buat halaman Bank Soal Guru
+  - [x] 5.5 Buat halaman Bank Soal Guru
     - Buat `src/app/(guru)/dashboard/bank-soal/page.tsx` (Server Component, daftar soal)
     - Buat komponen Client untuk form buat/edit soal dengan validasi per field
     - Tampilkan pesan konfirmasi dan error sesuai spesifikasi
     - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.7, 3.8_
 
-- [ ] 6. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
+- [x] 6. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
 
 - [ ] 7. Pembuatan dan konfigurasi ujian oleh Guru
   - [ ] 7.1 Implementasikan validator Zod untuk Exam
