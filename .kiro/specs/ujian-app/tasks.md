@@ -20,40 +20,40 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
   - _Requirements: 1, 2, 3, 4, 5, 6, 7, 8, 9_
 
 - [ ] 2. Autentikasi dengan NextAuth.js dan middleware RBAC
-  - [ ] 2.1 Konfigurasi NextAuth.js credentials provider
+  - [x] 2.1 Konfigurasi NextAuth.js credentials provider
     - Buat `src/lib/auth.ts` dengan konfigurasi NextAuth: credentials provider (email + password), bcrypt compare, JWT strategy, session durasi 60 menit, callback untuk menyertakan `id` dan `role` di token
     - Implementasikan logika lockout: setelah 5 kali gagal berurutan set `lockedUntil = now() + 15 menit`, reset `failedLoginAttempts` saat sukses
     - Buat route handler `src/app/api/auth/[...nextauth]/route.ts`
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
-  - [ ] 2.2 Implementasikan middleware RBAC
+  - [x] 2.2 Implementasikan middleware RBAC
     - Buat `src/middleware.ts` yang membaca JWT via `getToken()`, memeriksa `isActive` user per-request dari DB, dan menerapkan tabel routing RBAC: Admin → `/admin/*`, Guru → `/guru/*`, Siswa → `/siswa/*`
     - Tangani redirect ke `/login` untuk sesi kedaluwarsa dan redirect ke `/dashboard/{role}` untuk akses tidak diizinkan
     - Implementasikan auto-refresh token saat sisa waktu ≤5 menit
     - _Requirements: 1.5, 1.6, 1.7, 1.8, 2.1_
-  - [ ] 2.3 Tulis property test untuk RBAC (Property 10)
+  - [x] 2.3 Tulis property test untuk RBAC (Property 10)
     - **Property 10: RBAC access decisions consistent with config table**
     - Generator: semua kombinasi (role ∈ {ADMIN, GURU, SISWA}, routePath dari tabel RBAC config) — gunakan `fc.constantFrom`
     - Verifikasi: keputusan akses middleware SELALU konsisten dengan konfigurasi RBAC yang ditetapkan untuk setiap pasangan (role, route)
     - Tag: `// Feature: ujian-app, Property 10: RBAC access decision consistency`
     - Min 100 iterasi — **Validates: Requirements 1.7, 1.8, 2.1**
-  - [ ] 2.4 Buat halaman login UI
+  - [x] 2.4 Buat halaman login UI
     - Buat `src/app/(auth)/login/page.tsx` dengan form email + password, submit ke NextAuth `signIn`, tampilkan pesan error generik dan pesan lockout dengan estimasi waktu buka kunci
     - _Requirements: 1.1, 1.2, 1.3_
 
 - [ ] 3. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
 
-- [ ] 4. Manajemen pengguna oleh Admin
-  - [ ] 4.1 Implementasikan API users (CRUD + status)
+- [x] 4. Manajemen pengguna oleh Admin
+  - [x] 4.1 Implementasikan API users (CRUD + status)
     - Buat `src/app/api/users/route.ts`: `GET` (list dengan pagination), `POST` (buat user baru; validasi email unik, format valid, peran valid; hash bcrypt password; kirim notifikasi email)
     - Buat `src/app/api/users/[id]/route.ts`: `PATCH` (update data; validasi email uniqueness; simpan `updatedAt`)
     - Buat `src/app/api/users/[id]/status/route.ts`: `PATCH` (toggle `isActive`; jika nonaktif: set `isActive=false`, session akan invalid pada request berikutnya via middleware)
     - Gunakan Zod untuk validasi semua input; kembalikan `{ error, details }` untuk validation errors
     - _Requirements: 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9_
-  - [ ]* 4.2 Tulis unit tests untuk API users
+  - [x] 4.2 Tulis unit tests untuk API users
     - Gunakan jest-mock-extended untuk mock Prisma client
     - Test: duplikat email → 409, email tidak valid → 400, nonaktifkan user yang sudah nonaktif, aktifkan user, update dengan email milik user lain → 409
     - _Requirements: 2.3, 2.6, 2.7_
-  - [ ] 4.3 Buat halaman Admin: daftar dan form manajemen pengguna
+  - [x] 4.3 Buat halaman Admin: daftar dan form manajemen pengguna
     - Buat `src/app/(admin)/dashboard/users/page.tsx` (Server Component, fetch daftar user)
     - Buat komponen Client untuk form buat/edit user dan tombol aktif/nonaktif
     - Tampilkan pesan validasi per field dan pesan "Email sudah digunakan oleh akun lain"

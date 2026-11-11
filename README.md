@@ -23,6 +23,7 @@ node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'
 ```
 
 Set the generated value as `SESSION_SECRET` in `.env`.
+For self-hosted production deployments, configure `AUTH_URL` with the canonical application URL, or set `AUTH_TRUST_HOST=true` only when requests come through a trusted proxy.
 
 ### Initialize the database and run
 
