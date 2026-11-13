@@ -90,23 +90,23 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
 
 - [x] 6. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
 
-- [ ] 7. Pembuatan dan konfigurasi ujian oleh Guru
-  - [ ] 7.1 Implementasikan validator Zod untuk Exam
+- [x] 7. Pembuatan dan konfigurasi ujian oleh Guru
+  - [x] 7.1 Implementasikan validator Zod untuk Exam
     - Buat `src/lib/validators/exam.ts` dengan Zod schema: `title` (1–200 char), `durationMinutes` (int, 1–300), `maxViolations` (int, 1–100, optional), `shuffleQuestions` (boolean), `shuffleOptions` (boolean), `fullscreenEnabled` (boolean), `tabSwitchDetection` (boolean)
     - _Requirements: 4.2, 4.6_
-  - [ ] 7.2 Implementasikan API exams (CRUD + publish + assign)
+  - [x] 7.2 Implementasikan API exams (CRUD + publish + assign)
     - Buat `src/app/api/exams/route.ts`: `GET` (list ujian milik guru), `POST` (buat ujian baru dengan status `DRAFT`; ambil snapshot soal saat soal ditambahkan ke ujian: buat `QuestionSnapshot` dan `ExamQuestion`)
     - Buat `src/app/api/exams/[id]/route.ts`: `PATCH` (update konfigurasi ujian, hanya boleh saat status `DRAFT`)
     - Buat `src/app/api/exams/[id]/publish/route.ts`: `POST` (ubah status `DRAFT` → `PUBLISHED`; tolak 422 jika bukan `DRAFT`)
     - Buat `src/app/api/exams/[id]/assign/route.ts`: `POST` (buat `ExamAssignment`; tolak 422 jika status bukan `PUBLISHED`; gunakan `upsert` dengan `@@unique([examId, siswaId])`)
     - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5, 4.7, 4.8, 4.9, 4.10, 9.1, 9.2_
-  - [ ]* 7.3 Tulis property test untuk transisi status ujian (Property 9)
+  - [x]* 7.3 Tulis property test untuk transisi status ujian (Property 9)
     - **Property 9: exam status transitions guarded**
     - Generator: `fc.record({ status: fc.constantFrom('DRAFT', 'PUBLISHED') })` untuk membuat Exam dengan status acak
     - Verifikasi: `publishExam` berhasil (200) ↔ `status === 'DRAFT'`; `assignExam` berhasil (200) ↔ `status === 'PUBLISHED'`; semua kombinasi lain ditolak
     - Tag: `// Feature: ujian-app, Property 9: exam status transition guards`
     - Min 100 iterasi — **Validates: Requirements 4.7, 4.8, 4.9, 4.10**
-  - [ ] 7.4 Buat halaman pembuatan dan konfigurasi ujian Guru
+  - [x] 7.4 Buat halaman pembuatan dan konfigurasi ujian Guru
     - Buat `src/app/(guru)/dashboard/ujian/page.tsx` (daftar ujian) dan `new/page.tsx` (form buat ujian)
     - Buat form konfigurasi ujian: pilih soal dari bank soal, toggle fullscreen, toggle tab switching, input batas violation, toggle shuffle soal, toggle shuffle opsi
     - Buat tombol Publish dan Assign ke Siswa dengan feedback status
