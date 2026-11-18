@@ -13,8 +13,9 @@ export interface ReportEntry {
 export interface ExamSession {
   id: string
   siswaId: string
+  studentName?: string
   finalScore?: number | null
-  violations?: { length?: number }[]
+  violations?: number | { length?: number }[]
 }
 
 export function round2(value: number): number {
@@ -58,10 +59,18 @@ export function buildScoreDistribution(scores: number[]): DistributionBucket[] {
 
 export function buildReport(sessions: ExamSession[]): ReportEntry[] {
   return [...sessions]
-    .map((session) => ({
-      studentName: session.siswaId,
-      finalScore: session.finalScore ?? 0,
-      violations: session.violations?.length ?? 0,
-    }))
+    .map((session) => {
+      const rawScore = session.finalScore ?? 0
+      const finalScore = Number.isFinite(rawScore)
+        ? Math.min(100, Math.max(0, rawScore))
+        : 0
+      return {
+        studentName: session.studentName ?? session.siswaId,
+        finalScore,
+        violations: typeof session.violations === 'number'
+          ? session.violations
+          : session.violations?.length ?? 0,
+      }
+    })
     .sort((left, right) => right.finalScore - left.finalScore)
 }
