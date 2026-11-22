@@ -106,6 +106,27 @@ export interface SessionOrderRecord {
   optionOrders: Readonly<Record<string, readonly QuestionOption[]>>
 }
 
+export interface AssignedExamRecord {
+  examId: string
+  title: string
+  durationMinutes: number
+  status: 'NOT_STARTED' | 'IN_PROGRESS' | 'FINISHED'
+  sessionId: string | null
+  remainingSeconds: number | null
+}
+
+export interface ExamResultRecord {
+  examId: string
+  examTitle: string
+  sessionId: string
+  sessionStatus: SessionStatus
+  finalScore: number
+  correctCount: number
+  incorrectCount: number
+  unansweredCount: number
+  violationCount: number
+}
+
 export interface ExamQuestionPayload {
   id: string
   orderIndex: number
