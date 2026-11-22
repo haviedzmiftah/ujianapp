@@ -1,7 +1,6 @@
 import { Suspense } from 'react'
 import { getSession } from '@/lib/auth/session'
 import { redirect } from 'next/navigation'
-import { logoutAction } from '@/actions/auth.actions'
 
 export default function SiswaDashboardPage() {
   return (
@@ -22,13 +21,10 @@ async function SiswaDashboardContent() {
           <h1 className="text-2xl font-semibold text-gray-900">Dashboard Siswa</h1>
           <p className="text-sm text-gray-500 mt-1">Selamat datang, {session.name}</p>
         </div>
-        <form action={logoutAction}>
-          <button type="submit" className="text-sm text-gray-600 hover:text-gray-900 underline">
-            Keluar
-          </button>
-        </form>
       </div>
-      <p className="text-gray-600">Lihat dan kerjakan ujian yang ditugaskan.</p>
+      <a href="/siswa/dashboard/ujian" className="inline-block rounded-lg bg-blue-700 px-4 py-2 font-semibold text-white">
+        Lihat Ujian Ditugaskan
+      </a>
     </div>
   )
 }
