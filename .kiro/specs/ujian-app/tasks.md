@@ -112,8 +112,8 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - Buat tombol Publish dan Assign ke Siswa dengan feedback status
     - _Requirements: 4.1, 4.3, 4.4, 4.5, 4.7, 4.9, 9.1, 9.2_
 
-- [ ] 8. Scoring service dan laporan ujian
-  - [ ] 8.1 Implementasikan fungsi scoring murni
+- [x] 8. Scoring service dan laporan ujian
+  - [x] 8.1 Implementasikan fungsi scoring murni
     - Buat `src/lib/scoring.ts` dengan fungsi:
       - `calculateScore(correctCount: number, totalQuestions: number): number` — formula: `(correctCount / totalQuestions) * 100`, dibulatkan 2 desimal, rentang 0.00–100.00
       - `calculateQuestionCorrectRate(correctCount: number, totalAnswers: number): number` — formula: `(correctCount / totalAnswers) * 100`, dibulatkan 2 desimal
@@ -121,51 +121,51 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
       - `buildScoreDistribution(scores: number[]): DistributionBucket[]` — bucket per 10 poin (0–10, 11–20, …, 91–100)
       - `buildReport(sessions: ExamSession[]): ReportEntry[]` — diurutkan descending by `finalScore`
     - _Requirements: 7.1, 7.3, 7.4, 7.5, 7.9_
-  - [ ]* 8.2 Tulis property test untuk calculateScore — determinisme dan rentang (Property 1)
+  - [x]* 8.2 Tulis property test untuk calculateScore — determinisme dan rentang (Property 1)
     - **Property 1: calculateScore deterministic, range [0,100], 2 decimals**
     - Generator: `fc.integer({ min: 1, max: 200 })` untuk N (total soal), `fc.integer({ min: 0, max: N })` untuk K (jumlah benar)
     - Verifikasi: `calculateScore(K, N) === calculateScore(K, N)` (deterministik), `0.00 ≤ result ≤ 100.00`, result memiliki tepat ≤2 desimal
     - Tag: `// Feature: ujian-app, Property 1: score deterministic and within valid range`
     - Min 100 iterasi — **Validates: Requirements 7.1, 7.9**
-  - [ ]* 8.3 Tulis property test untuk calculateQuestionCorrectRate — rentang valid (Property 2)
+  - [x]* 8.3 Tulis property test untuk calculateQuestionCorrectRate — rentang valid (Property 2)
     - **Property 2: calculateQuestionCorrectRate range [0,100]**
     - Generator: `fc.integer({ min: 1, max: 200 })` untuk total, `fc.integer({ min: 0, max: total })` untuk correct
     - Verifikasi: `0.00 ≤ calculateQuestionCorrectRate(correct, total) ≤ 100.00`
     - Tag: `// Feature: ujian-app, Property 2: question correct rate within valid range`
     - Min 100 iterasi — **Validates: Requirements 7.4**
-  - [ ]* 8.4 Tulis property test untuk calculateClassAverage — mean aritmetika (Property 3)
+  - [x]* 8.4 Tulis property test untuk calculateClassAverage — mean aritmetika (Property 3)
     - **Property 3: calculateClassAverage is arithmetic mean**
     - Generator: `fc.array(fc.float({ min: 0, max: 100, noNaN: true }), { minLength: 1, maxLength: 200 })`
     - Verifikasi: `calculateClassAverage(scores) === round2(sum(scores) / scores.length)`
     - Tag: `// Feature: ujian-app, Property 3: class average is correct arithmetic mean`
     - Min 100 iterasi — **Validates: Requirements 7.3**
-  - [ ]* 8.5 Tulis property test untuk buildReport — urutan descending (Property 4)
+  - [x]* 8.5 Tulis property test untuk buildReport — urutan descending (Property 4)
     - **Property 4: report sorted descending by score**
     - Generator: `fc.array(fc.record({ finalScore: fc.float({ min: 0, max: 100 }) }), { minLength: 1, maxLength: 200 })`
     - Verifikasi: untuk setiap pasangan berurutan i, i+1 dalam hasil `buildReport(sessions)`: `report[i].finalScore >= report[i+1].finalScore`
     - Tag: `// Feature: ujian-app, Property 4: report list sorted descending by score`
     - Min 100 iterasi — **Validates: Requirements 7.2**
-  - [ ]* 8.6 Tulis property test untuk buildScoreDistribution — bucket assignment (Property 5)
+  - [x]* 8.6 Tulis property test untuk buildScoreDistribution — bucket assignment (Property 5)
     - **Property 5: score distribution correct bucket assignment**
     - Generator: `fc.float({ min: 0, max: 100, noNaN: true })` untuk nilai S
     - Verifikasi: S muncul di bucket `Math.floor(S / 10) * 10` (kecuali S = 100 → bucket 91–100)
     - Tag: `// Feature: ujian-app, Property 5: score distribution bucket assignment`
     - Min 100 iterasi — **Validates: Requirements 7.5**
-  - [ ] 8.7 Implementasikan API laporan dan komponen report
+  - [x] 8.7 Implementasikan API laporan dan komponen report
     - Buat `src/app/api/reports/[examId]/route.ts`: `GET` — ambil semua sesi selesai, hitung nilai (atau baca `finalScore`), bangun report dengan `buildReport`, `calculateClassAverage`, analisis per soal dengan `calculateQuestionCorrectRate`; tolak dengan pesan jika tidak ada sesi selesai (Req 7.8)
     - Buat `src/components/reports/GradeTable.tsx`, `QuestionAnalysisTable.tsx`, `GradeDistributionChart.tsx` (Recharts BarChart), `ExportButtons.tsx`
     - Buat `src/app/(guru)/dashboard/laporan/[examId]/page.tsx`
     - _Requirements: 7.2, 7.3, 7.4, 7.5, 7.8_
-  - [ ] 8.8 Implementasikan ekspor PDF dan Excel
+  - [x] 8.8 Implementasikan ekspor PDF dan Excel
     - Buat `src/lib/export/pdf.ts` menggunakan jsPDF: generate file berisi daftar nilai, rata-rata kelas, analisis per soal; bungkus dengan `Promise.race` + timeout 30 detik
     - Buat `src/lib/export/excel.ts` menggunakan SheetJS: generate file dengan satu baris per Siswa (nama, nilai akhir, jumlah violation); bungkus dengan `Promise.race` + timeout 30 detik
     - Sambungkan ke `ExportButtons.tsx`; tampilkan toast error jika timeout
     - _Requirements: 7.6, 7.7, 7.8_
 
-- [ ] 9. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
+- [x] 9. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
 
-- [ ] 10. Shuffle service (Fisher-Yates)
-  - [ ] 10.1 Implementasikan Shuffle_Service
+- [x] 10. Shuffle service (Fisher-Yates)
+  - [x] 10.1 Implementasikan Shuffle_Service
     - Tambahkan model `SessionOrder` ke Prisma schema (jika belum ada): menyimpan `sessionId`, `questionOrder` (array of examQuestionId), `optionOrders` (JSON map examQuestionId → [A/B/C/D shuffled])
     - Buat `src/lib/shuffle.ts`:
       - `fisherYatesShuffle<T>(arr: T[]): T[]` — implementasi in-place dengan spread copy dan `Math.random()`
@@ -173,7 +173,7 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
       - `saveSessionOrder(sessionId, order): Promise<void>` — simpan ke DB sebelum soal pertama tampil
       - `getSessionOrder(sessionId): Promise<SessionOrder>` — ambil urutan tersimpan untuk resume
     - _Requirements: 9.3, 9.4, 9.5, 9.6_
-  - [ ] 10.2 Integrasikan Shuffle_Service ke exam session creation
+  - [x] 10.2 Integrasikan Shuffle_Service ke exam session creation
     - Di `POST /api/exam-sessions`: setelah sesi berhasil dibuat, panggil `generateSessionOrder` lalu `saveSessionOrder`; jika `saveSessionOrder` gagal → rollback sesi dan kembalikan error ke klien
     - Di `POST /api/exam-sessions` (resume): panggil `getSessionOrder` dan sertakan dalam respons
     - Pastikan penilaian di `POST /api/exam-sessions/[id]/submit` selalu menggunakan `correctOption` dari `QuestionSnapshot` asli (bukan posisi tampil opsi)
