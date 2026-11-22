@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth/session'
 import { getExamResult } from '@/lib/exam-sessions/exam-session.service'
@@ -6,7 +7,15 @@ interface ExamResultPageProps {
   params: Promise<{ examId: string }>
 }
 
-export default async function ExamResultPage({ params }: ExamResultPageProps) {
+export default function ExamResultPage({ params }: ExamResultPageProps) {
+  return (
+    <Suspense fallback={<main className="p-8 text-gray-500">Memuat hasil ujian...</main>}>
+      <ExamResultContent params={params} />
+    </Suspense>
+  )
+}
+
+async function ExamResultContent({ params }: ExamResultPageProps) {
   const session = await getSession()
   if (!session || session.role !== 'SISWA') redirect('/login')
 
