@@ -274,7 +274,7 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - Tambahkan navigasi sidebar/navbar yang konsisten di semua role (Admin, Guru, Siswa)
     - Pastikan semua redirect RBAC dari middleware bekerja dengan benar di semua route
     - _Requirements: 1.7, 1.8, 2.1, 7.2, 7.3, 7.4, 7.5, 7.6, 7.7_
-  - [ ]* 17.2 Tulis E2E tests Playwright: alur lengkap Guru → Siswa → Laporan
+  - [x]* 17.2 Tulis E2E tests Playwright: alur lengkap Guru → Siswa → Laporan
     - Alur: login Guru → buat soal → buat ujian (dengan shuffle + proctoring) → publish → assign ke Siswa → login Siswa → kerjakan ujian → submit → login Guru → buka laporan → export PDF
     - _Requirements: semua_
   - [ ]* 17.3 Tulis E2E test Playwright: proctoring fullscreen exit dan resume sesi
