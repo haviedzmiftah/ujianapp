@@ -165,6 +165,9 @@ export const examSessionRepository = {
     const savedOrder = await db.orm.public.SessionOrder.first({ sessionId })
     if (!savedOrder) throw new Error('Urutan soal sesi tidak ditemukan.')
     const answers = await db.orm.public.Answer.where({ sessionId }).all()
+    const violationResult = await db.orm.public.Violation
+      .where({ sessionId })
+      .aggregate((aggregate) => ({ count: aggregate.count() }))
 
     return {
       exam: {
@@ -182,6 +185,7 @@ export const examSessionRepository = {
         optionOrders: savedOrder.optionOrders as Record<string, readonly QuestionOption[]>,
       },
       remainingSeconds: session.remainingSeconds,
+      violationCount: violationResult.count,
       answers: answers.map((answer) => ({
         examQuestionId: answer.examQuestionId,
         selectedOption: answer.selectedOption as QuestionOption,
