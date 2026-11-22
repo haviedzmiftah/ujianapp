@@ -112,9 +112,6 @@ export async function recordExamViolation(
     throw new ExamSessionAccessError('Sesi ujian ini telah berakhir.')
   }
   const result = await examSessionRepository.addViolation(sessionId, type)
-  if (result.shouldSubmit) {
-    await examSessionRepository.submit(sessionId)
-  }
   return result
 }
 
