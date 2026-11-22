@@ -269,7 +269,7 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
 - [x] 16. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
 
 - [ ] 17. Wiring akhir, end-to-end integration, dan polish
-  - [ ] 17.1 Wiring komponen dan halaman Guru (laporan + navigasi)
+  - [x] 17.1 Wiring komponen dan halaman Guru (laporan + navigasi)
     - Hubungkan halaman laporan Guru dengan data dari API, komponen Recharts, dan tombol ekspor
     - Tambahkan navigasi sidebar/navbar yang konsisten di semua role (Admin, Guru, Siswa)
     - Pastikan semua redirect RBAC dari middleware bekerja dengan benar di semua route
