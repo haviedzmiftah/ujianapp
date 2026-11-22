@@ -246,11 +246,11 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - Tampilkan jumlah violation terkini di UI ExamEngine (Req 6.4)
     - _Requirements: 6.1, 6.4, 6.5, 6.6_
 
-- [ ] 14. Integritas data: QuestionSnapshot immutability
-  - [ ] 14.1 Implementasikan verifikasi immutabilitas snapshot di test
+- [x] 14. Integritas data: QuestionSnapshot immutability
+  - [x] 14.1 Implementasikan verifikasi immutabilitas snapshot di test
     - Buat `src/lib/snapshot.ts` dengan fungsi `createSnapshot(question): QuestionSnapshot` dan `getSnapshot(id): Promise<QuestionSnapshot>` (wrapper tipis di atas Prisma)
     - _Requirements: 3.6_
-  - [ ]* 14.2 Tulis property test untuk QuestionSnapshot immutability (Property 6)
+  - [x]* 14.2 Tulis property test untuk QuestionSnapshot immutability (Property 6)
     - **Property 6: QuestionSnapshot immutable after Question update**
     - Generator: `fc.record({ text: fc.string(), optionA: fc.string(), optionB: fc.string(), optionC: fc.string(), optionD: fc.string(), correctOption: fc.constantFrom('A','B','C','D') })` untuk data snapshot awal + `fc.array(...)` untuk serangkaian update acak pada Question asalnya (in-memory mock repository)
     - Verifikasi: `readSnapshot(id)` sebelum dan sesudah semua update pada `Question` menghasilkan objek yang identik field per field
