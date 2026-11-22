@@ -1,18 +1,6 @@
-import { redirect } from 'next/navigation'
 import type { ReactNode } from 'react'
-import { RoleNavigation } from '@/components/layout/RoleNavigation'
-import { getSession } from '@/lib/auth/session'
-import { ROLE_HOME } from '@/lib/auth/rbac'
+import { RoleLayout } from '@/components/layout/RoleLayout'
 
-export default async function GuruLayout({ children }: { children: ReactNode }) {
-  const session = await getSession()
-  if (!session) redirect('/login')
-  if (session.role !== 'GURU') redirect(ROLE_HOME[session.role])
-
-  return (
-    <div className="min-h-screen bg-gray-50">
-      <RoleNavigation role="GURU" name={session.name} />
-      {children}
-    </div>
-  )
+export default function GuruLayout({ children }: { children: ReactNode }) {
+  return <RoleLayout role="GURU">{children}</RoleLayout>
 }
