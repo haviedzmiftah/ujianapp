@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { redirect } from 'next/navigation'
 import { getSession } from '@/lib/auth/session'
 import { listAssignedExams } from '@/lib/exam-sessions/exam-session.service'
@@ -8,7 +9,15 @@ const statusLabels = {
   FINISHED: 'Selesai',
 } as const
 
-export default async function StudentExamsPage() {
+export default function StudentExamsPage() {
+  return (
+    <Suspense fallback={<main className="p-8 text-gray-500">Memuat daftar ujian...</main>}>
+      <StudentExamsContent />
+    </Suspense>
+  )
+}
+
+async function StudentExamsContent() {
   const session = await getSession()
   if (!session || session.role !== 'SISWA') redirect('/login')
 
