@@ -11,6 +11,7 @@ import {
 } from './NavigationPanel'
 import { QuestionDisplay } from './QuestionDisplay'
 import { SubmitConfirmDialog } from './SubmitConfirmDialog'
+import { ProctorService } from '@/components/proctor/ProctorService'
 
 interface ExamEngineProps {
   payload: ExamEnginePayload
@@ -38,6 +39,7 @@ export function ExamEngine({ payload }: ExamEngineProps) {
   const [isSubmitDialogOpen, setIsSubmitDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState<string | null>(null)
+  const [violationCount, setViolationCount] = useState(payload.violationCount)
   const submitStartedRef = useRef(false)
 
   const orderedQuestions = useMemo(() => {
@@ -107,81 +109,102 @@ export function ExamEngine({ payload }: ExamEngineProps) {
   const currentQuestion = orderedQuestions[currentIndex]
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-8">
-      <div className="mx-auto max-w-6xl">
-        <header className="mb-6 flex items-center justify-between gap-4">
-          <div>
-            <p className="text-sm text-gray-500">Ujian</p>
-            <h1 className="text-2xl font-semibold text-gray-900">{payload.exam.title}</h1>
-          </div>
-          <CountdownTimer remainingSeconds={remainingSeconds} />
-        </header>
+    <ProctorService
+      sessionId={payload.session.id}
+      config={{
+        fullscreenEnabled: payload.exam.fullscreenEnabled,
+        tabSwitchDetection: payload.exam.tabSwitchDetection,
+        maxViolations: payload.exam.maxViolations,
+      }}
+      initialViolationCount={payload.violationCount}
+      onViolationCountChange={setViolationCount}
+      onAutoSubmit={() => {
+        void submitExam()
+      }}
+      onError={setSubmitError}
+    >
+      <div className="min-h-screen bg-gray-50 p-4 md:p-8">
+        <div className="mx-auto max-w-6xl">
+          <header className="mb-6 flex items-center justify-between gap-4">
+            <div>
+              <p className="text-sm text-gray-500">Ujian</p>
+              <h1 className="text-2xl font-semibold text-gray-900">{payload.exam.title}</h1>
+              <p className="mt-1 text-sm font-medium text-red-700">
+                Pelanggaran: {violationCount}
+                {payload.exam.maxViolations !== null
+                  ? ` / ${payload.exam.maxViolations}`
+                  : ''}
+              </p>
+            </div>
+            <CountdownTimer remainingSeconds={remainingSeconds} />
+          </header>
 
-        {submitError && (
-          <p className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-            {submitError}
-          </p>
-        )}
-
-        <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_220px]">
-          {currentQuestion && (
-            <QuestionDisplay
-              question={currentQuestion}
-              optionOrder={
-                payload.sessionOrder.optionOrders[currentQuestion.id] ?? ['A', 'B', 'C', 'D']
-              }
-              displayNumber={currentIndex + 1}
-              selectedOption={selectedAnswers[currentQuestion.id]}
-              onSelect={(option) => {
-                void handleSelect(currentQuestion.id, option)
-              }}
-            />
+          {submitError && (
+            <p className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+              {submitError}
+            </p>
           )}
 
-          <NavigationPanel
-            statuses={statuses}
-            currentIndex={currentIndex}
-            onNavigate={setCurrentIndex}
-          />
+          <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_220px]">
+            {currentQuestion && (
+              <QuestionDisplay
+                question={currentQuestion}
+                optionOrder={
+                  payload.sessionOrder.optionOrders[currentQuestion.id] ?? ['A', 'B', 'C', 'D']
+                }
+                displayNumber={currentIndex + 1}
+                selectedOption={selectedAnswers[currentQuestion.id]}
+                onSelect={(option) => {
+                  void handleSelect(currentQuestion.id, option)
+                }}
+              />
+            )}
+
+            <NavigationPanel
+              statuses={statuses}
+              currentIndex={currentIndex}
+              onNavigate={setCurrentIndex}
+            />
+          </div>
+
+          <footer className="mt-6 flex justify-between">
+            <button
+              type="button"
+              onClick={() => setCurrentIndex((index) => Math.max(0, index - 1))}
+              disabled={currentIndex === 0}
+              className="rounded-lg border border-gray-300 bg-white px-4 py-2 disabled:opacity-40"
+            >
+              Sebelumnya
+            </button>
+            {currentIndex < orderedQuestions.length - 1 ? (
+              <button
+                type="button"
+                onClick={() => setCurrentIndex((index) => index + 1)}
+                className="rounded-lg bg-gray-900 px-4 py-2 text-white"
+              >
+                Berikutnya
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setIsSubmitDialogOpen(true)}
+                className="rounded-lg bg-blue-700 px-4 py-2 font-semibold text-white"
+              >
+                Selesai
+              </button>
+            )}
+          </footer>
         </div>
 
-        <footer className="mt-6 flex justify-between">
-          <button
-            type="button"
-            onClick={() => setCurrentIndex((index) => Math.max(0, index - 1))}
-            disabled={currentIndex === 0}
-            className="rounded-lg border border-gray-300 bg-white px-4 py-2 disabled:opacity-40"
-          >
-            Sebelumnya
-          </button>
-          {currentIndex < orderedQuestions.length - 1 ? (
-            <button
-              type="button"
-              onClick={() => setCurrentIndex((index) => index + 1)}
-              className="rounded-lg bg-gray-900 px-4 py-2 text-white"
-            >
-              Berikutnya
-            </button>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setIsSubmitDialogOpen(true)}
-              className="rounded-lg bg-blue-700 px-4 py-2 font-semibold text-white"
-            >
-              Selesai
-            </button>
-          )}
-        </footer>
+        <SubmitConfirmDialog
+          open={isSubmitDialogOpen}
+          onCancel={() => setIsSubmitDialogOpen(false)}
+          onConfirm={() => {
+            void submitExam()
+          }}
+          isSubmitting={isSubmitting}
+        />
       </div>
-
-      <SubmitConfirmDialog
-        open={isSubmitDialogOpen}
-        onCancel={() => setIsSubmitDialogOpen(false)}
-        onConfirm={() => {
-          void submitExam()
-        }}
-        isSubmitting={isSubmitting}
-      />
-    </div>
+    </ProctorService>
   )
 }
