@@ -257,12 +257,12 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - Tag: `// Feature: ujian-app, Property 6: question snapshot immutability`
     - Min 100 iterasi — **Validates: Requirements 3.6**
 
-- [ ] 15. Dashboard Siswa dan halaman hasil ujian
-  - [ ] 15.1 Buat halaman dashboard Siswa: daftar ujian yang ditugaskan
+- [x] 15. Dashboard Siswa dan halaman hasil ujian
+  - [x] 15.1 Buat halaman dashboard Siswa: daftar ujian yang ditugaskan
     - Buat `src/app/api/exams/assigned/route.ts`: `GET` — ambil `ExamAssignment` milik siswa yang login, sertakan info `Exam` dan status sesi aktif jika ada
     - Buat `src/app/(siswa)/dashboard/ujian/page.tsx`: daftar ujian yang ditugaskan dengan status (belum dikerjakan / sedang dikerjakan / selesai) dan tombol mulai/lanjutkan
     - _Requirements: 5.1, 5.2_
-  - [ ] 15.2 Buat halaman hasil ujian setelah submit
+  - [x] 15.2 Buat halaman hasil ujian setelah submit
     - Buat `src/app/(siswa)/dashboard/ujian/[examId]/hasil/page.tsx`: tampilkan `finalScore`, jumlah benar/salah/belum dijawab, jumlah violations; redirect dari sini jika mencoba akses sesi yang sudah berakhir
     - _Requirements: 5.8, 5.10_
 
