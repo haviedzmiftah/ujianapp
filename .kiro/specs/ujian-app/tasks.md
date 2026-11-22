@@ -217,10 +217,10 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - Buat `src/app/(siswa)/dashboard/ujian/[examId]/kerjakan/page.tsx` sebagai Server Component yang fetch sesi, lalu render `ExamEngine`
     - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7, 5.8, 5.9, 5.10, 9.7, 9.10, 9.11_
 
-- [ ] 12. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
+- [x] 12. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
 
-- [ ] 13. Proctoring service
-  - [ ] 13.1 Implementasikan `useProctor` hook dan ProctorService
+- [x] 13. Proctoring service
+  - [x] 13.1 Implementasikan `useProctor` hook dan ProctorService
     - Buat `src/hooks/useProctor.ts`:
       - Daftarkan listener `fullscreenchange` (deteksi `document.fullscreenElement === null`) dan `visibilitychange` (deteksi `document.visibilityState === 'hidden'`) serta `window.blur` sebagai fallback
       - Setiap event yang terdeteksi: panggil `POST /api/exam-sessions/[id]/violations`, increment violation counter lokal, cek apakah sudah mencapai `maxViolations`
@@ -228,19 +228,19 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - Buat `src/components/proctor/ViolationWarningModal.tsx`: modal yang tampil saat violation terjadi, membutuhkan konfirmasi siswa untuk melanjutkan, tampilkan hitungan violation saat ini
     - Buat `src/components/proctor/ProctorService.tsx`: komponen wrapper yang menerima `ProctorConfig` props dan meng-orkestrasi keseluruhan proctoring
     - _Requirements: 6.1, 6.2, 6.3, 6.4_
-  - [ ]* 13.2 Tulis property test untuk violation count monoton dan tepat satu per event (Property 11)
+  - [x]* 13.2 Tulis property test untuk violation count monoton dan tepat satu per event (Property 11)
     - **Property 11: violation count monotonically increases, exactly 1 entry per event**
     - Generator: `fc.array(fc.constantFrom('fullscreen_exit', 'tab_switch'), { minLength: 1, maxLength: 50 })` sebagai urutan events acak pada in-memory session store
     - Verifikasi: (a) violation count tidak pernah berkurang setelah setiap event; (b) setiap event menghasilkan tepat satu entri `Violation` baru (count sebelum + 1 = count sesudah)
     - Tag: `// Feature: ujian-app, Property 11: violation count monotonically increases, one per event`
     - Min 100 iterasi — **Validates: Requirements 6.2, 6.3, 6.7**
-  - [ ]* 13.3 Tulis property test untuk auto-submit mempertahankan jawaban (Property 12)
+  - [x]* 13.3 Tulis property test untuk auto-submit mempertahankan jawaban (Property 12)
     - **Property 12: auto-submit preserves all stored answers**
     - Generator: `fc.integer({ min: 1, max: 20 })` untuk `maxViolations`; `fc.array(fc.record({ examQuestionId: fc.string(), selectedOption: fc.constantFrom('A','B','C','D') }), { minLength: 0, maxLength: 50 })` untuk jawaban tersimpan; trigger violation ke-N
     - Verifikasi: (a) status sesi = `SUBMITTED`; (b) count answers setelah auto-submit ≥ count answers sebelum auto-submit
     - Tag: `// Feature: ujian-app, Property 12: auto-submit preserves all stored answers`
     - Min 100 iterasi — **Validates: Requirements 6.5**
-  - [ ] 13.4 Integrasikan ProctorService ke ExamEngine
+  - [x] 13.4 Integrasikan ProctorService ke ExamEngine
     - Sambungkan `ProctorService` ke `ExamEngine` melalui props `ProctorConfig` (dari `exam.fullscreenEnabled`, `exam.tabSwitchDetection`, `exam.maxViolations`)
     - Handle callback `onAutoSubmit`: panggil `POST /api/exam-sessions/[id]/submit`; jika gagal tampilkan pesan error dan pertahankan status aktif (Req 6.6)
     - Tampilkan jumlah violation terkini di UI ExamEngine (Req 6.4)
