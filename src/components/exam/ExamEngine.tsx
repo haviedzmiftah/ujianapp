@@ -74,7 +74,7 @@ export function ExamEngine({ payload }: ExamEngineProps) {
         const result = await response.json()
         throw new Error(result.error ?? 'Gagal mengakhiri ujian.')
       }
-      window.location.href = '/siswa/dashboard'
+      window.location.href = `/siswa/dashboard/ujian/${payload.exam.id}/hasil`
     } catch (error) {
       submitStartedRef.current = false
       setSubmitError(error instanceof Error ? error.message : 'Gagal mengakhiri ujian.')
