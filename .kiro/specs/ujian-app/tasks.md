@@ -266,7 +266,7 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - Buat `src/app/(siswa)/dashboard/ujian/[examId]/hasil/page.tsx`: tampilkan `finalScore`, jumlah benar/salah/belum dijawab, jumlah violations; redirect dari sini jika mencoba akses sesi yang sudah berakhir
     - _Requirements: 5.8, 5.10_
 
-- [ ] 16. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
+- [x] 16. Checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
 
 - [ ] 17. Wiring akhir, end-to-end integration, dan polish
   - [ ] 17.1 Wiring komponen dan halaman Guru (laporan + navigasi)
