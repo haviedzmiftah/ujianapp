@@ -106,6 +106,36 @@ export interface SessionOrderRecord {
   optionOrders: Readonly<Record<string, readonly QuestionOption[]>>
 }
 
+export interface ExamQuestionPayload {
+  id: string
+  orderIndex: number
+  snapshot: {
+    text: string
+    optionA: string
+    optionB: string
+    optionC: string
+    optionD: string
+  }
+}
+
+export interface ExamEnginePayload {
+  exam: {
+    id: string
+    title: string
+    fullscreenEnabled: boolean
+    tabSwitchDetection: boolean
+    maxViolations: number | null
+  }
+  session: ExamSessionRecord
+  sessionOrder: SessionOrderRecord
+  remainingSeconds: number
+  answers: Array<{
+    examQuestionId: string
+    selectedOption: QuestionOption
+  }>
+  questions: ExamQuestionPayload[]
+}
+
 // ─── Session Payload ──────────────────────────────────────────────────────────
 
 /** Payload yang disimpan di JWT cookie. */
