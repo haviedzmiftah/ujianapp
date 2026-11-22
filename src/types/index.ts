@@ -129,11 +129,18 @@ export interface ExamEnginePayload {
   session: ExamSessionRecord
   sessionOrder: SessionOrderRecord
   remainingSeconds: number
+  violationCount: number
   answers: Array<{
     examQuestionId: string
     selectedOption: QuestionOption
   }>
   questions: ExamQuestionPayload[]
+}
+
+export interface ProctorConfig {
+  fullscreenEnabled: boolean
+  tabSwitchDetection: boolean
+  maxViolations: number | null
 }
 
 // ─── Session Payload ──────────────────────────────────────────────────────────
