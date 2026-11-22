@@ -1,4 +1,6 @@
 import type {
+  AssignedExamRecord,
+  ExamResultRecord,
   ExamEnginePayload,
   ExamQuestionPayload,
   ExamSessionRecord,
@@ -285,6 +287,72 @@ export const examSessionRepository = {
     return {
       violationCount: result.count,
       shouldSubmit: result.count >= maxViolations,
+    }
+  },
+
+  async listAssignedExams(siswaId: string): Promise<AssignedExamRecord[]> {
+    const db = await getDb()
+    const assignments = await db.orm.public.ExamAssignment
+      .where({ siswaId })
+      .all()
+
+    const records = await Promise.all(assignments.map(async (assignment) => {
+      const exam = await db.orm.public.Exam.first({ id: assignment.examId })
+      if (!exam) return null
+      const session = await db.orm.public.ExamSession
+        .first({ examId: assignment.examId, siswaId })
+      const status = !session
+        ? 'NOT_STARTED'
+        : session.status === 'ACTIVE'
+          ? 'IN_PROGRESS'
+          : 'FINISHED'
+
+      return {
+        examId: exam.id,
+        title: exam.title,
+        durationMinutes: exam.durationMinutes,
+        status,
+        sessionId: session?.id ?? null,
+        remainingSeconds: session?.remainingSeconds ?? null,
+      }
+    }))
+    return records.filter((item): item is AssignedExamRecord => item !== null)
+  },
+
+  async getExamResult(examId: string, siswaId: string): Promise<ExamResultRecord | null> {
+    const db = await getDb()
+    const session = await db.orm.public.ExamSession
+      .first({ examId, siswaId })
+    if (!session) return null
+
+    const exam = await db.orm.public.Exam.first({ id: examId })
+    if (!exam) return null
+    const examQuestions = await db.orm.public.ExamQuestion
+      .where({ examId })
+      .all()
+    const answers = await db.orm.public.Answer
+      .where({ sessionId: session.id })
+      .all()
+    const violations = await db.orm.public.Violation
+      .where({ sessionId: session.id })
+      .aggregate((aggregate) => ({ count: aggregate.count() }))
+    const answeredCount = new Set(
+      answers.map((answer) => answer.examQuestionId)
+    ).size
+    const correctCount = answers.filter((answer) => answer.isCorrect).length
+
+    return {
+      examId,
+      examTitle: exam.title,
+      sessionId: session.id,
+      sessionStatus: session.status,
+      finalScore: session.finalScore === null || session.finalScore === undefined
+        ? 0
+        : Number(session.finalScore),
+      correctCount,
+      incorrectCount: Math.max(0, answeredCount - correctCount),
+      unansweredCount: Math.max(0, examQuestions.length - answeredCount),
+      violationCount: violations.count,
     }
   },
 }
