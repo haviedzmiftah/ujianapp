@@ -1,8 +1,17 @@
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
 import { getSession } from '@/lib/auth/session'
 import { ROLE_HOME } from '@/lib/auth/rbac'
 
-export default async function NewExamPage() {
+export default function NewExamPage() {
+  return (
+    <Suspense fallback={<main className="p-8">Memuat form ujian...</main>}>
+      <NewExamPageContent />
+    </Suspense>
+  )
+}
+
+async function NewExamPageContent() {
   const session = await getSession()
   if (!session) redirect('/login')
   if (session.role !== 'GURU') redirect(ROLE_HOME[session.role])

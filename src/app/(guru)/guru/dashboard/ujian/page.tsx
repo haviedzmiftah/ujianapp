@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
 import { getSession } from '@/lib/auth/session'
 import { ROLE_HOME } from '@/lib/auth/rbac'
 import { listExams } from '@/lib/exams/exam.service'
@@ -9,7 +10,15 @@ interface ExamPageProps {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
-export default async function ExamsPage({ searchParams }: ExamPageProps) {
+export default function ExamsPage({ searchParams }: ExamPageProps) {
+  return (
+    <Suspense fallback={<main className="p-8">Memuat daftar ujian...</main>}>
+      <ExamsPageContent searchParams={searchParams} />
+    </Suspense>
+  )
+}
+
+async function ExamsPageContent({ searchParams }: ExamPageProps) {
   const session = await getSession()
   if (!session) redirect('/login')
   if (session.role !== 'GURU') redirect(ROLE_HOME[session.role])

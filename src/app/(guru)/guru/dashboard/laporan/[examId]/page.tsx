@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation'
+import { Suspense } from 'react'
 import { getSession } from '@/lib/auth/session'
 import { ROLE_HOME } from '@/lib/auth/rbac'
 import {
@@ -11,7 +12,21 @@ import QuestionAnalysisTable from '@/components/reports/QuestionAnalysisTable'
 import GradeDistributionChart from '@/components/reports/GradeDistributionChart'
 import ExportButtons from '@/components/reports/ExportButtons'
 
-export default async function ReportPage({
+export const instant = false
+
+export default function ReportPage({
+  params,
+}: {
+  params: Promise<{ examId: string }>
+}) {
+  return (
+    <Suspense fallback={<main className="p-8">Memuat laporan ujian...</main>}>
+      <ReportContent params={params} />
+    </Suspense>
+  )
+}
+
+async function ReportContent({
   params,
 }: {
   params: Promise<{ examId: string }>
