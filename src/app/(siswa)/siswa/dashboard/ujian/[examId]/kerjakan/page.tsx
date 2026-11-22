@@ -22,6 +22,9 @@ export default async function ExamWorkPage({ params }: ExamWorkPageProps) {
     return <ExamEngine payload={payload} />
   } catch (error) {
     if (error instanceof ExamSessionAccessError) {
+      if (error.message.includes('telah berakhir')) {
+        redirect(`/siswa/dashboard/ujian/${examId}/hasil`)
+      }
       return (
         <div className="min-h-screen bg-gray-50 p-8">
           <div className="mx-auto max-w-xl rounded-xl border border-red-200 bg-red-50 p-6">
