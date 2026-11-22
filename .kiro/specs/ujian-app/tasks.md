@@ -179,37 +179,37 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - Pastikan penilaian di `POST /api/exam-sessions/[id]/submit` selalu menggunakan `correctOption` dari `QuestionSnapshot` asli (bukan posisi tampil opsi)
     - _Requirements: 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.10, 9.11_
 
-- [ ] 11. Exam Engine (Client Component)
-  - [ ] 11.1 Implementasikan API exam-sessions (buat/resume, jawaban, submit)
+- [x] 11. Exam Engine (Client Component)
+  - [x] 11.1 Implementasikan API exam-sessions (buat/resume, jawaban, submit)
     - Buat `src/app/api/exam-sessions/route.ts`: `POST` — cek `@@unique([examId, siswaId])`; jika sesi aktif ada → resume (kembalikan sesi + jawaban + sisa waktu + session order); jika belum ada → buat sesi baru + generate session order + simpan; tolak 409 jika conflict bersamaan
     - Buat `src/app/api/exam-sessions/[id]/answers/route.ts`: `PATCH` — upsert `Answer` (sessionId, examQuestionId, selectedOption, `isCorrect` dihitung dari snapshot `correctOption`)
     - Buat `src/app/api/exam-sessions/[id]/submit/route.ts`: `POST` — verifikasi count jawaban server vs lokal; hitung `finalScore` via `calculateScore`; set `status = SUBMITTED`, `submittedAt = now()`; tolak akses jika sesi sudah berakhir
     - Buat `src/app/api/exam-sessions/[id]/violations/route.ts`: `POST` — buat entri `Violation`; cek apakah `count(violations) >= maxViolations`; jika ya, trigger auto-submit (panggil logika submit yang sama)
     - _Requirements: 5.1, 5.2, 5.5, 5.8, 5.9, 5.10, 6.5, 8.3, 8.5_
-  - [ ]* 11.2 Tulis property test untuk single active session constraint (Property 13)
+  - [x]* 11.2 Tulis property test untuk single active session constraint (Property 13)
     - **Property 13: single active session constraint**
     - Generator: `fc.integer({ min: 2, max: 10 })` untuk jumlah concurrent requests pada pasangan (siswaId, examId) yang sama; simulasikan dengan Promise.all di atas in-memory function dengan mutex
     - Verifikasi: tepat satu request berhasil (status 201), sisanya mendapat 409
     - Tag: `// Feature: ujian-app, Property 13: single active session constraint`
     - Min 100 iterasi — **Validates: Requirements 8.3**
-  - [ ]* 11.3 Tulis property test untuk jawaban tersimpan dapat diambil kembali (Property 14)
+  - [x]* 11.3 Tulis property test untuk jawaban tersimpan dapat diambil kembali (Property 14)
     - **Property 14: stored answers retrievable accurately**
     - Generator: `fc.record({ examQuestionId: fc.string(), selectedOption: fc.constantFrom('A', 'B', 'C', 'D') })` (in-memory mock repository)
     - Verifikasi: setelah `saveAnswer(...)` berhasil, `getSession(id).answers` mengandung entry dengan `selectedOption` dan `examQuestionId` yang identik
     - Tag: `// Feature: ujian-app, Property 14: stored answers retrievable accurately`
     - Min 100 iterasi — **Validates: Requirements 5.5, 8.2**
-  - [ ] 11.4 Implementasikan `useExamTimer` dan `CountdownTimer`
+  - [x] 11.4 Implementasikan `useExamTimer` dan `CountdownTimer`
     - Buat `src/hooks/useExamTimer.ts`: state `remainingSeconds`, `useEffect` dengan `setInterval` 1 detik; saat `remainingSeconds <= 0` panggil `onTimeUp` callback; sync `remainingSeconds` ke server setiap 30 detik via PATCH
     - Buat `src/components/exam/CountdownTimer.tsx` yang menampilkan HH:MM:SS dan berubah warna saat ≤5 menit
     - _Requirements: 5.7, 5.9, 8.2_
-  - [ ] 11.5 Implementasikan `useOfflineSync` dengan IndexedDB
+  - [x] 11.5 Implementasikan `useOfflineSync` dengan IndexedDB
     - Buat `src/hooks/useOfflineSync.ts` menggunakan library `idb`:
       - Simpan setiap jawaban ke IndexedDB sebelum mengirim ke server
       - Jika request gagal: retry dengan interval 5 detik, maksimal 3 kali; setelah 3 kali gagal tampilkan error indicator
       - Listen `window.online` event: saat koneksi pulih, sinkronisasi semua pending answers secara serial
       - Saat `POST /api/exam-sessions/[id]/submit`: verifikasi count server vs IndexedDB; jika ada ketidaksesuaian, upload ulang pending answers sebelum finalisasi
     - _Requirements: 5.6, 8.1, 8.4, 8.5_
-  - [ ] 11.6 Implementasikan ExamEngine (Client Component utama)
+  - [x] 11.6 Implementasikan ExamEngine (Client Component utama)
     - Buat `src/components/exam/QuestionDisplay.tsx`: tampilkan satu soal per halaman dengan nomor urut (dari session order), teks soal, dan empat opsi (dalam urutan dari session order)
     - Buat `src/components/exam/NavigationPanel.tsx`: tampilkan semua nomor soal dengan status "dijawab" / "belum dijawab" / "error"; klik nomor → navigasi ke soal tersebut
     - Buat `src/components/exam/SubmitConfirmDialog.tsx`: dialog konfirmasi sebelum submit
