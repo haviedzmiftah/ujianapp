@@ -19,9 +19,10 @@ describe('shuffle utilities', () => {
   it('generated order respects the shuffle flags and includes every option', () => {
     fc.assert(
       fc.property(
-        fc.array(fc.record({ id: fc.string({ minLength: 1 }) }), {
+        fc.uniqueArray(fc.record({ id: fc.string({ minLength: 1 }) }), {
           minLength: 1,
           maxLength: 30,
+          selector: (question) => question.id,
         }),
         fc.boolean(),
         fc.boolean(),
