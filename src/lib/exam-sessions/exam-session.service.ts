@@ -125,3 +125,13 @@ export async function getExamEnginePayload(sessionId: string, siswaId: string) {
   }
   return payload
 }
+
+export async function listAssignedExams(siswaId: string) {
+  return examSessionRepository.listAssignedExams(siswaId)
+}
+
+export async function getExamResult(examId: string, siswaId: string) {
+  const result = await examSessionRepository.getExamResult(examId, siswaId)
+  if (!result) throw new ExamSessionAccessError('Sesi ujian tidak ditemukan.')
+  return result
+}
