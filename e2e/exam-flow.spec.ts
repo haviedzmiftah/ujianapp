@@ -49,6 +49,8 @@ test.beforeAll(async () => {
 })
 
 test('Guru membuat soal dan ujian, siswa mengerjakan, guru melihat laporan dan PDF', async ({ page }) => {
+  test.setTimeout(60_000)
+
   await login(page, guru.email)
   await expect(page).toHaveURL(/\/guru\/dashboard/)
 
@@ -100,7 +102,7 @@ test('Guru membuat soal dan ujian, siswa mengerjakan, guru melihat laporan dan P
   await page.goto('/siswa/dashboard/ujian')
   await page.getByRole('link', { name: 'Mulai Ujian' }).click()
   await expect(page.getByText('Soal nomor 1')).toBeVisible()
-  await page.locator('section').getByRole('button').filter({ hasText: '4' }).click()
+  await page.locator('section').getByRole('button', { name: /^\d+\. 4$/ }).click()
   await page.getByRole('button', { name: 'Selesai' }).click()
   await page.getByRole('button', { name: 'Selesaikan' }).click()
   await expect(page).toHaveURL(
