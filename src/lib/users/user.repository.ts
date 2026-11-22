@@ -32,7 +32,7 @@ export interface UserRepository {
 export const userRepository: UserRepository = {
   async findAll(options?: { role?: Role }): Promise<UserRecord[]> {
     const db = await getDb()
-    const rows = await (db.orm.public.User as any).orderBy('createdAt', 'desc').all()
+    const rows = await db.orm.public.User.orderBy((user) => user.createdAt.desc()).all()
     const filtered = options?.role ? rows.filter((row: any) => row.role === options.role) : rows
     return filtered.map((row: any) => sanitizeUserRecord(row))
   },
