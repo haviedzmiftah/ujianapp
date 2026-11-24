@@ -172,61 +172,96 @@ export default function UserManagement({
   const lastPage = Math.max(1, Math.ceil(total / pageSize))
 
   return (
-    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.8fr)]">
-      <section className="min-w-0 rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-        <div className="mb-5 flex items-center justify-between gap-4">
+    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_22rem]">
+      {/* Kolom Kiri: Tabel Data Pengguna */}
+      <section className="min-w-0 rounded-xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-xs">
+        <div className="mb-5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-slate-100 pb-4">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">Daftar Pengguna</h2>
-            <p className="mt-1 text-sm text-gray-500">{total} akun terdaftar</p>
+            <h2 className="text-lg font-bold text-slate-900">Daftar Pengguna</h2>
+            <p className="text-xs text-slate-500">{total} akun terdaftar dalam sistem</p>
           </div>
-          <span className="text-sm text-gray-500">
+          <span className="text-xs font-medium text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md self-start sm:self-auto">
             Halaman {currentPage} dari {lastPage}
           </span>
         </div>
 
         {formError && (
-          <p role="alert" className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-            {formError}
-          </p>
+          <div role="alert" className="mb-4 rounded-xl border border-red-200 bg-red-50/80 p-3.5 text-xs sm:text-sm text-red-700 flex items-center gap-2">
+            <svg className="w-4 h-4 text-red-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span>{formError}</span>
+          </div>
         )}
         {notice && (
-          <p role="status" className="mb-4 rounded-lg border border-green-200 bg-green-50 p-3 text-sm text-green-700">
-            {notice}
-          </p>
+          <div role="status" className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50/80 p-3.5 text-xs sm:text-sm text-emerald-700 flex items-center gap-2">
+            <svg className="w-4 h-4 text-emerald-500 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            <span>{notice}</span>
+          </div>
         )}
 
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[38rem] text-left text-sm">
-            <thead className="border-b border-gray-200 text-xs uppercase tracking-wide text-gray-500">
+        <div className="overflow-x-auto rounded-lg border border-slate-100">
+          <table className="w-full min-w-[36rem] text-left text-sm">
+            <thead className="bg-slate-50 border-b border-slate-100 text-xs uppercase font-semibold text-slate-500">
               <tr>
-                <th scope="col" className="px-3 py-3">Nama</th>
-                <th scope="col" className="px-3 py-3">Peran</th>
-                <th scope="col" className="px-3 py-3">Status</th>
-                <th scope="col" className="px-3 py-3">Tindakan</th>
+                <th scope="col" className="px-4 py-3">Nama & Email</th>
+                <th scope="col" className="px-4 py-3">Peran</th>
+                <th scope="col" className="px-4 py-3">Status</th>
+                <th scope="col" className="px-4 py-3 text-right">Tindakan</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-slate-100">
               {users.map((user) => (
-                <tr key={user.id}>
-                  <td className="px-3 py-3">
-                    <p className="font-medium text-gray-900">{user.name}</p>
-                    <p className="text-gray-500">{user.email}</p>
+                <tr key={user.id} className="hover:bg-slate-50/60 transition-colors">
+                  <td className="px-4 py-3.5">
+                    <div className="flex items-center gap-2.5">
+                      <div className="h-8 w-8 rounded-full bg-indigo-50 border border-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-xs shrink-0">
+                        {user.name.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="font-semibold text-slate-900 truncate">{user.name}</p>
+                        <p className="text-xs text-slate-500 truncate">{user.email}</p>
+                      </div>
+                    </div>
                   </td>
-                  <td className="px-3 py-3 text-gray-700">{roleLabel(user.role)}</td>
-                  <td className="px-3 py-3">
-                    <span className={user.isActive ? 'text-green-700' : 'text-gray-500'}>
+                  <td className="px-4 py-3.5">
+                    <span
+                      className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${
+                        user.role === 'ADMIN'
+                          ? 'bg-purple-50 text-purple-700 ring-purple-700/10'
+                          : user.role === 'GURU'
+                          ? 'bg-sky-50 text-sky-700 ring-sky-700/10'
+                          : 'bg-indigo-50 text-indigo-700 ring-indigo-700/10'
+                      }`}
+                    >
+                      {roleLabel(user.role)}
+                    </span>
+                  </td>
+                  <td className="px-4 py-3.5">
+                    <span
+                      className={`inline-flex items-center gap-1.5 text-xs font-medium ${
+                        user.isActive ? 'text-emerald-700' : 'text-slate-400'
+                      }`}
+                    >
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full ${
+                          user.isActive ? 'bg-emerald-500' : 'bg-slate-400'
+                        }`}
+                      />
                       {user.isActive ? 'Aktif' : 'Nonaktif'}
                     </span>
                   </td>
-                  <td className="px-3 py-3">
+                  <td className="px-4 py-3.5 text-right">
                     {user.role === 'ADMIN' ? (
-                      <span className="text-xs text-gray-400">Akun Admin dilindungi</span>
+                      <span className="text-xs text-slate-400 italic">Admin Utama</span>
                     ) : (
-                      <div className="flex flex-wrap gap-3">
+                      <div className="flex items-center justify-end gap-2">
                         <button
                           type="button"
                           onClick={() => startEditing(user)}
-                          className="font-medium text-blue-700 hover:text-blue-900"
+                          className="rounded-md border border-slate-200 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 hover:text-indigo-600 transition-colors"
                         >
                           Edit
                         </button>
@@ -234,13 +269,17 @@ export default function UserManagement({
                           type="button"
                           disabled={pendingStatusId === user.id}
                           onClick={() => void toggleUserStatus(user)}
-                          className="font-medium text-gray-700 hover:text-gray-900 disabled:opacity-50"
+                          className={`rounded-md border px-2.5 py-1 text-xs font-semibold transition-colors disabled:opacity-50 ${
+                            user.isActive
+                              ? 'border-amber-200 text-amber-700 hover:bg-amber-50'
+                              : 'border-emerald-200 text-emerald-700 hover:bg-emerald-50'
+                          }`}
                         >
                           {pendingStatusId === user.id
-                            ? 'Memproses...'
+                            ? '...'
                             : user.isActive
-                              ? 'Nonaktifkan'
-                              : 'Aktifkan'}
+                            ? 'Nonaktifkan'
+                            : 'Aktifkan'}
                         </button>
                       </div>
                     )}
@@ -249,8 +288,8 @@ export default function UserManagement({
               ))}
               {users.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-3 py-8 text-center text-gray-500">
-                    Belum ada pengguna pada halaman ini.
+                  <td colSpan={4} className="px-4 py-8 text-center text-slate-500 text-xs">
+                    Belum ada data pengguna pada halaman ini.
                   </td>
                 </tr>
               )}
@@ -258,52 +297,66 @@ export default function UserManagement({
           </table>
         </div>
 
-        <nav aria-label="Navigasi halaman pengguna" className="mt-5 flex justify-between">
+        {/* Pagination Nav */}
+        <nav aria-label="Navigasi halaman pengguna" className="mt-5 flex items-center justify-between border-t border-slate-100 pt-3">
           {currentPage > 1 ? (
             <Link
               href={`/admin/dashboard/users?page=${currentPage - 1}`}
-              className="text-sm font-medium text-blue-700 hover:text-blue-900"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-800"
             >
-              Sebelumnya
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+              <span>Sebelumnya</span>
             </Link>
           ) : <span />}
           {currentPage < lastPage && (
             <Link
               href={`/admin/dashboard/users?page=${currentPage + 1}`}
-              className="text-sm font-medium text-blue-700 hover:text-blue-900"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-indigo-600 hover:text-indigo-800"
             >
-              Berikutnya
+              <span>Berikutnya</span>
+              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
             </Link>
           )}
         </nav>
       </section>
 
-      <section className="h-fit rounded-xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-        <h2 className="text-lg font-semibold text-gray-900">
-          {editingUser ? 'Edit Pengguna' : 'Buat Pengguna'}
-        </h2>
-        <p className="mt-1 text-sm text-gray-500">
-          {editingUser ? 'Kosongkan password jika tidak ingin mengubahnya.' : 'Buat akun baru untuk Guru atau Siswa.'}
-        </p>
+      {/* Kolom Kanan: Card Form Tambah / Edit Pengguna Dash UI */}
+      <section className="h-fit rounded-xl border border-slate-200/80 bg-white p-5 sm:p-6 shadow-xs">
+        <div className="border-b border-slate-100 pb-3 mb-4">
+          <h2 className="text-base font-bold text-slate-900">
+            {editingUser ? 'Edit Pengguna' : 'Tambah Pengguna Baru'}
+          </h2>
+          <p className="mt-0.5 text-xs text-slate-500">
+            {editingUser
+              ? 'Kosongkan password bila tidak ada perubahan.'
+              : 'Daftarkan akun baru untuk Guru atau Siswa.'}
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="mt-5 space-y-4" noValidate>
+        <form onSubmit={handleSubmit} className="space-y-4" noValidate>
           <FormField
             id="name"
-            label="Nama"
+            label="Nama Lengkap"
             value={form.name}
+            placeholder="misal: Budi Santoso"
             error={fieldErrors.name}
             onChange={(name) => setForm((current) => ({ ...current, name }))}
           />
           <FormField
             id="email"
-            label="Email"
+            label="Alamat Email"
             type="email"
+            placeholder="nama@sekolah.sch.id"
             value={form.email}
             error={fieldErrors.email}
             onChange={(email) => setForm((current) => ({ ...current, email }))}
           />
           <div>
-            <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="mb-1 block text-xs font-semibold text-slate-700">
               Password {editingUser ? '(opsional)' : ''}
             </label>
             <input
@@ -312,6 +365,7 @@ export default function UserManagement({
               autoComplete="new-password"
               minLength={8}
               required={!editingUser}
+              placeholder="Minimal 8 karakter"
               value={form.password}
               onChange={(event) =>
                 setForm((current) => ({ ...current, password: event.target.value }))
@@ -323,8 +377,8 @@ export default function UserManagement({
             {fieldErrors.password && <FieldError id="password-error" message={fieldErrors.password} />}
           </div>
           <div>
-            <label htmlFor="role" className="mb-1.5 block text-sm font-medium text-gray-700">
-              Peran
+            <label htmlFor="role" className="mb-1 block text-xs font-semibold text-slate-700">
+              Peran Pengguna
             </label>
             <select
               id="role"
@@ -337,16 +391,16 @@ export default function UserManagement({
               }
               className={inputClass(Boolean(fieldErrors.role))}
             >
-              <option value="GURU">Guru</option>
-              <option value="SISWA">Siswa</option>
+              <option value="GURU">Guru (Pembuat Ujian)</option>
+              <option value="SISWA">Siswa (Peserta Ujian)</option>
             </select>
             {fieldErrors.role && <FieldError id="role-error" message={fieldErrors.role} />}
           </div>
-          <div className="flex gap-3 pt-2">
+          <div className="flex flex-col gap-2 pt-2">
             <button
               type="submit"
               disabled={isSaving}
-              className="rounded-lg bg-blue-700 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-50 transition-colors shadow-xs"
             >
               {isSaving ? 'Menyimpan...' : editingUser ? 'Simpan Perubahan' : 'Buat Pengguna'}
             </button>
@@ -354,9 +408,9 @@ export default function UserManagement({
               <button
                 type="button"
                 onClick={resetForm}
-                className="rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+                className="w-full rounded-lg border border-slate-200 px-4 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50 transition-colors"
               >
-                Batal
+                Batal Edit
               </button>
             )}
           </div>
@@ -372,8 +426,8 @@ function roleLabel(role: Role): string {
 }
 
 function inputClass(hasError: boolean): string {
-  return `w-full rounded-lg border px-3 py-2.5 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-    hasError ? 'border-red-400' : 'border-gray-300'
+  return `w-full rounded-lg border bg-white px-3 py-2 text-xs sm:text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-600 ${
+    hasError ? 'border-red-400' : 'border-slate-200'
   }`
 }
 
@@ -381,6 +435,7 @@ function FormField({
   id,
   label,
   value,
+  placeholder,
   error,
   type = 'text',
   onChange,
@@ -388,6 +443,7 @@ function FormField({
   id: string
   label: string
   value: string
+  placeholder?: string
   error?: string
   type?: string
   onChange: (value: string) => void
@@ -395,12 +451,13 @@ function FormField({
   const errorId = `${id}-error`
   return (
     <div>
-      <label htmlFor={id} className="mb-1.5 block text-sm font-medium text-gray-700">
+      <label htmlFor={id} className="mb-1 block text-xs font-semibold text-slate-700">
         {label}
       </label>
       <input
         id={id}
         type={type}
+        placeholder={placeholder}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={Boolean(error)}
@@ -414,7 +471,7 @@ function FormField({
 
 function FieldError({ id, message }: { id: string; message: string }) {
   return (
-    <p id={id} className="mt-1 text-sm text-red-700">
+    <p id={id} className="mt-1 text-xs text-red-600">
       {message}
     </p>
   )
