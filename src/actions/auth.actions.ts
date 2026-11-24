@@ -56,5 +56,5 @@ export async function loginAction(
 export async function logoutAction(): Promise<void> {
   const { deleteSession } = await import('@/lib/auth/session')
   await deleteSession()
-  redirect('/login')
+  redirect('/')
 }
