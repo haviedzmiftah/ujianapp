@@ -13,7 +13,7 @@ interface UsersPageProps {
 
 export default function UsersPage({ searchParams }: UsersPageProps) {
   return (
-    <Suspense fallback={<p className="p-8 text-gray-500">Memuat daftar pengguna...</p>}>
+    <Suspense fallback={<p className="p-8 text-slate-500">Memuat daftar pengguna...</p>}>
       <UsersPageContent searchParams={searchParams} />
     </Suspense>
   )
@@ -37,14 +37,16 @@ async function UsersPageContent({ searchParams }: UsersPageProps) {
       : (await listUsers({ page: currentPage, limit: USERS_PER_PAGE })).items
 
   return (
-    <main className="mx-auto w-full max-w-6xl p-6 sm:p-8">
-      <header className="mb-8">
-        <p className="text-sm font-medium text-blue-700">Administrasi</p>
-        <h1 className="mt-1 text-2xl font-semibold text-gray-900">Manajemen Pengguna</h1>
-        <p className="mt-2 text-sm text-gray-600">
-          Buat dan perbarui akun Guru dan Siswa serta kelola status aksesnya.
-        </p>
+    <div className="space-y-6">
+      <header className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Manajemen Pengguna</h1>
+          <p className="mt-1 text-sm text-slate-500">
+            Kelola data akun Guru dan Siswa, hak akses peran, serta status aktifasi akun.
+          </p>
+        </div>
       </header>
+
       <UserManagement
         initialUsers={users.map(({ id, name, email, role, isActive, createdAt, updatedAt }) => ({
           id,
@@ -59,6 +61,6 @@ async function UsersPageContent({ searchParams }: UsersPageProps) {
         totalUsers={result.total}
         pageSize={USERS_PER_PAGE}
       />
-    </main>
+    </div>
   )
 }
