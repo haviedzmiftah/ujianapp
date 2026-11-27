@@ -27,6 +27,8 @@ Ujian App adalah aplikasi ujian online berbasis web (Next.js 16 atau versi stabl
 - **Urutan_Acak_Soal**: Urutan tampil soal yang di-generate unik per Sesi_Ujian menggunakan algoritma Fisher-Yates shuffle
 - **Urutan_Acak_Opsi**: Urutan tampil keempat opsi jawaban yang di-generate unik per soal per Sesi_Ujian
 - **Shuffle_Service**: Modul yang bertanggung jawab menghasilkan dan menyimpan urutan acak untuk soal dan opsi jawaban
+- **Kelas**: Rombongan belajar atau kelompok siswa yang dibuat dan dikelola oleh Admin
+- **Class_Service**: Modul yang mengelola pembuatan, pembaruan, dan keanggotaan siswa dalam Kelas
 
 ---
 
@@ -187,3 +189,23 @@ Ujian App adalah aplikasi ujian online berbasis web (Next.js 16 atau versi stabl
 9. THE Report_Service SHALL menampilkan teks soal dan teks setiap Opsi_Jawaban dalam urutan asli yang ditetapkan Guru pada laporan hasil ujian, bukan dalam urutan tampil yang diterima masing-masing Siswa.
 10. WHEN randomisasi urutan soal tidak diaktifkan pada Ujian, THE Exam_Engine SHALL menampilkan soal kepada seluruh Siswa dalam urutan yang ditetapkan Guru saat membuat Ujian.
 11. WHEN randomisasi urutan opsi jawaban tidak diaktifkan pada Ujian, THE Exam_Engine SHALL menampilkan keempat Opsi_Jawaban kepada seluruh Siswa dalam urutan yang ditetapkan Guru saat membuat Soal.
+
+---
+
+### Requirement 10: Manajemen Kelas oleh Admin
+
+**User Story:** Sebagai Admin, saya ingin dapat membuat, mengubah, dan menghapus data kelas serta mengatur penempatan siswa ke dalam kelas, sehingga manajemen siswa dan distribusi penugasan ujian dapat dilakukan secara terorganisir per rombongan belajar.
+
+#### Acceptance Criteria
+
+1. THE System SHALL membatasi akses fitur manajemen kelas hanya kepada pengguna dengan peran Admin; pengguna dengan peran lain SHALL menerima respons "Akses ditolak" dan diarahkan ke halaman beranda perannya.
+2. WHEN Admin membuat Kelas baru dengan nama kelas (1–50 karakter unik setelah di-trim) dan opsi jenjang/deskripsi, THE Class_Service SHALL menyimpan kelas ke basis data dan menampilkan pesan konfirmasi bahwa kelas berhasil dibuat.
+3. IF Admin mencoba membuat Kelas dengan nama yang sudah terdaftar (perbandingan case-insensitive setelah di-trim), THEN THE Class_Service SHALL menolak penyimpanan dan menampilkan pesan "Nama kelas sudah digunakan."
+4. IF Admin mengirimkan formulir pembuatan Kelas dengan nama kelas kosong atau hanya berisi karakter whitespace, THEN THE Class_Service SHALL menolak penyimpanan dan menampilkan pesan validasi "Nama kelas wajib diisi."
+5. WHEN Admin mengubah nama atau deskripsi Kelas yang ada dengan data yang valid, THE Class_Service SHALL memperbarui data kelas dan mencatat timestamp pembaruan.
+6. WHEN Admin melihat daftar Kelas, THE Class_Service SHALL menampilkan seluruh kelas yang terdaftar beserta informasi jumlah siswa yang terasosiasi dengan masing-masing kelas.
+7. WHEN Admin menetapkan atau memindahkan seorang Siswa ke dalam suatu Kelas, THE Class_Service SHALL memperbarui asosiasi kelas siswa tersebut dan memastikan siswa hanya memiliki satu kelas aktif.
+8. WHEN Admin mengeluarkan Siswa dari suatu Kelas, THE Class_Service SHALL menghapus asosiasi kelas dari akun siswa tersebut tanpa menghapus akun atau riwayat ujian siswa.
+9. WHEN Admin mencoba menghapus Kelas yang masih memiliki minimal satu Siswa terdaftar, THE Class_Service SHALL menolak penghapusan dan menampilkan pesan "Kelas tidak dapat dihapus karena masih memiliki siswa terdaftar."
+10. WHEN Admin menghapus Kelas yang tidak memiliki Siswa terdaftar, THE Class_Service SHALL menghapus data kelas secara permanen dari basis data dan menampilkan konfirmasi penghapusan.
+11. THE System SHALL memungkinkan Guru untuk melihat daftar Kelas dan daftar Siswa per Kelas untuk mempermudah penugasan Ujian.

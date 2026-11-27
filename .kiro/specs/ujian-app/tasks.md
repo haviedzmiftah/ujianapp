@@ -285,7 +285,38 @@ Rencana implementasi ini memecah desain Ujian App menjadi langkah-langkah coding
     - 5 kali login gagal → akun terkunci → notifikasi tampil → setelah 15 menit akun terbuka
     - _Requirements: 1.3_
 
-- [ ] 18. Final checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
+- [x] 18. Manajemen Kelas oleh Admin
+  - [x] 18.1 Perbarui skema Prisma dan emit contract
+    - Tambahkan model `Class` (id, name, grade, description, createdAt, updatedAt) ke `src/prisma/contract.prisma`
+    - Tambahkan relasi opsional `classId` / `class` pada model `User`
+    - Jalankan `npm run contract:emit` untuk menghasilkan `contract.json` dan `contract.d.ts`
+    - Perbarui tipe domain di `src/types/index.ts`
+    - _Requirements: 10.2, 10.7_
+  - [x] 18.2 Implementasikan Class Repository dan Class Service
+    - Buat `src/lib/classes/class.repository.ts` untuk akses data Prisma: findAll (dengan count siswa), findById, findByName, create, update, delete, getStudents, assignStudent, removeStudent
+    - Buat `src/lib/classes/class.service.ts`: validasi input (nama 1–50 char, no whitespace-only, case-insensitive uniqueness), cek aturan tidak boleh hapus kelas jika masih ada siswa
+    - Buat `src/lib/validators/class.ts` dengan Zod schema
+    - _Requirements: 10.2, 10.3, 10.4, 10.5, 10.6, 10.7, 10.8, 10.9, 10.10_
+  - [x] 18.3 Tulis property test dan unit test untuk Manajemen Kelas
+    - **Property 15: class name uniqueness and student association integrity**
+    - Verifikasi: nama kelas duplikat ditolak, penghapusan kelas dengan siswa ditolak, relasi siswa-kelas terhubung tepat
+    - Tag: `// Feature: ujian-app, Property 15: class name uniqueness and student association integrity`
+    - Unit tests untuk repository dan service functions menggunakan Vitest
+    - _Requirements: 10.3, 10.7, 10.9_
+  - [x] 18.4 Implementasikan Route Handlers untuk Classes API
+    - Buat `src/app/api/classes/route.ts`: `GET` (daftar kelas beserta jumlah siswa), `POST` (buat kelas baru, role ADMIN)
+    - Buat `src/app/api/classes/[id]/route.ts`: `PATCH` (ubah data kelas), `DELETE` (hapus kelas jika siswa kosong)
+    - Buat `src/app/api/classes/[id]/students/route.ts`: `GET` (daftar siswa di kelas), `POST` (tambah/pindahkan siswa ke kelas)
+    - Buat `src/app/api/classes/[id]/students/[siswaId]/route.ts`: `DELETE` (keluarkan siswa dari kelas)
+    - _Requirements: 10.1, 10.2, 10.3, 10.5, 10.6, 10.7, 10.8, 10.9, 10.10, 10.11_
+  - [x] 18.5 Buat antarmuka Admin: Manajemen Kelas (Dash UI style)
+    - Tambahkan tautan navigasi `Manajemen Kelas` pada sidebar `AdminShell.tsx`
+    - Buat halaman `src/app/(admin)/admin/dashboard/classes/page.tsx`
+    - Buat komponen `src/components/admin/ClassManagement.tsx`: full-width data table dengan search, pagination, tombol tambah kelas (modal popup)
+    - Buat komponen `src/components/admin/ClassDetailModal.tsx`: modal dialog untuk mengelola daftar siswa dalam kelas (tambah siswa dari daftar siswa yang ada, hapus/keluarkan siswa)
+    - _Requirements: 10.1, 10.2, 10.5, 10.6, 10.7, 10.8, 10.10_
+
+- [ ] 19. Final checkpoint — Pastikan semua tests lulus, tanyakan kepada user jika ada pertanyaan
 
 ---
 

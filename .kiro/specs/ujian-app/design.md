@@ -138,7 +138,8 @@ src/
 │   │   └── login/
 │   ├── (admin)/
 │   │   └── dashboard/
-│   │       └── users/
+│   │       ├── users/
+│   │       └── classes/            — Manajemen Kelas (Admin)
 │   ├── (guru)/
 │   │   └── dashboard/
 │   │       ├── bank-soal/
@@ -152,12 +153,17 @@ src/
 │   └── api/
 │       ├── auth/[...nextauth]/
 │       ├── users/
+│       ├── classes/                — Endpoint CRUD & anggota kelas
 │       ├── questions/
 │       ├── exams/
 │       ├── exam-sessions/
 │       └── reports/
 ├── components/
 │   ├── auth/
+│   ├── admin/
+│   │   ├── UserManagement.tsx
+│   │   ├── ClassManagement.tsx     — Client Component Manajemen Kelas
+│   │   └── ClassDetailModal.tsx    — Kelola daftar siswa per kelas
 │   ├── exam/
 │   │   ├── ExamEngine.tsx          — Client Component utama
 │   │   ├── QuestionDisplay.tsx
@@ -200,6 +206,13 @@ src/
 | `POST` | `/api/users` | Buat pengguna baru | Admin |
 | `PATCH` | `/api/users/[id]` | Ubah pengguna | Admin |
 | `PATCH` | `/api/users/[id]/status` | Aktif/nonaktif | Admin |
+| `GET` | `/api/classes` | Daftar kelas beserta jumlah siswa | Admin, Guru |
+| `POST` | `/api/classes` | Buat kelas baru | Admin |
+| `PATCH` | `/api/classes/[id]` | Ubah nama/tingkat kelas | Admin |
+| `DELETE` | `/api/classes/[id]` | Hapus kelas (jika tidak ada siswa) | Admin |
+| `GET` | `/api/classes/[id]/students` | Daftar siswa dalam kelas | Admin, Guru |
+| `POST` | `/api/classes/[id]/students` | Tambah/pindahkan siswa ke kelas | Admin |
+| `DELETE` | `/api/classes/[id]/students/[siswaId]` | Keluarkan siswa dari kelas | Admin |
 | `GET` | `/api/questions` | Daftar soal milik guru | Guru |
 | `POST` | `/api/questions` | Buat soal baru | Guru |
 | `PATCH` | `/api/questions/[id]` | Ubah soal | Guru |
@@ -330,6 +343,8 @@ model User {
   isActive    Boolean   @default(true)
   failedLoginAttempts Int @default(0)
   lockedUntil DateTime?
+  classId     String?                       // Foreign key ke Class (untuk Siswa)
+  class       Class?    @relation(fields: [classId], references: [id])
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
 
@@ -338,6 +353,20 @@ model User {
   exams       Exam[]
   assignments ExamAssignment[]
   sessions    ExamSession[]
+}
+
+// ─── Class (Manajemen Kelas) ──────────────────────────────────────────────────
+
+model Class {
+  id          String    @id @default(cuid())
+  name        String    @unique @db.VarChar(50) // misal: "X IPA 1", "XII RPL 2"
+  grade       String?   @db.VarChar(20)         // misal: "10", "11", "12"
+  description String?   @db.VarChar(255)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  students    User[]    // Siswa yang tergabung dalam kelas ini
 }
 
 // ─── Question (Bank Soal) ─────────────────────────────────────────────────────
@@ -773,6 +802,15 @@ Generator: urutan request pembuatan sesi bersamaan untuk pasangan (siswaId, exam
 // Feature: ujian-app, Property 14: stored answers retrievable accurately
 ```
 Generator: pasangan (examQuestionId, selectedOption) acak. Setelah `saveAnswer(...)` berhasil: `getSession(id).answers` SHALL mengandung entry dengan `selectedOption` dan `examQuestionId` yang identik.
+
+#### Property 15 — Nama Kelas Unik dan Integritas Relasi Siswa-Kelas
+```
+// Feature: ujian-app, Property 15: class name uniqueness and student association integrity
+```
+Generator: string nama kelas acak (1–50 karakter). Verifikasi:
+1. Pembuatan dua kelas dengan nama yang sama (case-insensitive setelah trim) SELALU ditolak.
+2. Setiap siswa yang dikaitkan ke kelas tertentu SELALU memiliki `classId` yang valid dan dapat dihitung akurat pada jumlah anggota kelas.
+3. Penghapusan kelas yang masih memiliki siswa terdaftar SELALU ditolak demi menjaga integritas data.
 
 ### End-to-End Tests
 

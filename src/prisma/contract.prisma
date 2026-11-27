@@ -31,6 +31,8 @@ model User {
   isActive            Boolean          @default(true)
   failedLoginAttempts Int              @default(0)
   lockedUntil         TimestamptzString?
+  classId             String?
+  class               Class?           @relation(fields: [classId], references: [id])
   createdAt           TimestamptzString @default(now())
   updatedAt           temporal.updatedAtString()
   questions           Question[]
@@ -166,4 +168,14 @@ model SessionOrder {
   session       ExamSession @relation(fields: [sessionId], references: [id])
   questionOrder String[]
   optionOrders  Json
+}
+
+model Class {
+  id          String            @id @default(cuid(2))
+  name        String            @unique
+  grade       String?
+  description String?
+  createdAt   TimestamptzString @default(now())
+  updatedAt   temporal.updatedAtString()
+  students    User[]
 }

@@ -16,8 +16,21 @@ export interface UserRecord {
   isActive: boolean
   failedLoginAttempts: number
   lockedUntil: TimestampString | null
+  classId?: string | null
   createdAt: TimestampString
   updatedAt: TimestampString
+}
+
+export interface ClassRecord {
+  id: string
+  name: string
+  grade: string | null
+  description: string | null
+  createdAt: TimestampString
+  updatedAt: TimestampString
+  _count?: {
+    students: number
+  }
 }
 
 export interface QuestionRecord {
